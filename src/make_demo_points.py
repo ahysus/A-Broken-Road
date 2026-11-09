@@ -17,18 +17,6 @@ from network import RoadNetwork, distance_m, read_json
 MAX_CUT_SIZE = 3
 
 
-def inside(lat, lon, ring):
-    """Checks whether a point is inside a polygon, using the ray casting method."""
-    # Draw an imaginary line from the point and count how many edges it crosses.
-    # An odd count means the point is inside the polygon.
-    is_inside = False
-    for (lat1, lon1), (lat2, lon2) in zip(ring, ring[1:]):
-        crosses = (lat1 > lat) != (lat2 > lat)
-        if crosses and lon < (lon2 - lon1) * (lat - lat1) / (lat2 - lat1) + lon1:
-            is_inside = not is_inside
-    return is_inside
-
-
 def find_cuts(network, barangay_of):
     """Finds small sets of roads whose closure separates Guisad junctions from all destinations."""
     # A simple two-way version of the vehicle graph, with one extra artificial junction
@@ -57,13 +45,12 @@ def main():
     network = RoadNetwork(data, [], destinations)
     vehicle = network.graphs["vehicle"]
 
-    # Note which barangay each vehicle junction is in, if any.
+    # Note which barangay each vehicle junction is in, keeping only those inside Guisad.
     barangay_of = {}
     for node in vehicle.nodes:
-        place = network.nodes[node]
-        for boundary in data["boundaries"]:
-            if inside(place["lat"], place["lon"], boundary["ring"]):
-                barangay_of[node] = boundary["name"]
+        name = network.barangay_at(network.nodes[node]["lat"], network.nodes[node]["lon"])
+        if name:
+            barangay_of[node] = name
 
     cuts, plain = find_cuts(network, barangay_of)
     goals_walk = network.goals("walking")

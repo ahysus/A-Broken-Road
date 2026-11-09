@@ -28,6 +28,18 @@ def distance_m(lat1, lon1, lat2, lon2):
     return 2 * radius * math.asin(math.sqrt(a))
 
 
+def inside(lat, lon, ring):
+    """Checks whether a point is inside a polygon, using the ray casting method."""
+    # Draw an imaginary line from the point and count how many edges it crosses.
+    # An odd count means the point is inside the polygon.
+    is_inside = False
+    for (lat1, lon1), (lat2, lon2) in zip(ring, ring[1:]):
+        crosses = (lat1 > lat) != (lat2 > lat)
+        if crosses and lon < (lon2 - lon1) * (lat - lat1) / (lat2 - lat1) + lon1:
+            is_inside = not is_inside
+    return is_inside
+
+
 class RoadNetwork:
     """Holds both graphs and remembers which road segments are closed."""
 
@@ -36,8 +48,21 @@ class RoadNetwork:
         self.nodes = {int(key): value for key, value in network_data["nodes"].items()}
         # Look up any road segment by its id number.
         self.segments = {segment["id"]: segment for segment in network_data["segments"]}
-        # Barangay outlines, used only for drawing on the map.
+        # Barangay outlines. They define the study area: starting points must be inside.
         self.boundaries = network_data["boundaries"]
+        # Each outline's bounding rectangle (south, north, west, east). Checking this
+        # simple rectangle first skips the slower polygon check for most far-away points.
+        self.boundary_boxes = [
+            (min(lat for lat, _ in b["ring"]), max(lat for lat, _ in b["ring"]),
+             min(lon for _, lon in b["ring"]), max(lon for _, lon in b["ring"]))
+            for b in self.boundaries
+        ]
+        # Which segments touch the study area. The page draws the others faintly,
+        # because they are only there so routes can reach places outside Guisad.
+        self.in_study_area = {
+            segment["id"]: any(self.barangay_at(lat, lon) for lat, lon in segment["line"])
+            for segment in network_data["segments"]
+        }
         # The set of segment ids that are closed right now. It starts empty.
         self.closed = set()
         # Speed in meters per second, for each mode. Dividing km/h by 3.6 converts it.
@@ -59,6 +84,13 @@ class RoadNetwork:
         self.points = {point["id"]: self._snap_place(point) for point in points}
         # Do the same for each destination.
         self.destinations = {place["id"]: self._snap_place(place) for place in destinations}
+
+    def barangay_at(self, lat, lon):
+        """Returns the name of the study barangay containing a point, or None if outside."""
+        for boundary, (south, north, west, east) in zip(self.boundaries, self.boundary_boxes):
+            if south <= lat <= north and west <= lon <= east and inside(lat, lon, boundary["ring"]):
+                return boundary["name"]
+        return None
 
     def _build_graph(self, mode):
         """Builds the graph for one travel mode from the shared segment list."""

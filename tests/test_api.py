@@ -117,6 +117,24 @@ def test_bad_input_gets_an_error_not_a_crash():
     assert web.post("/api/toggle", json={"segment": -1}).status_code == 400
 
 
+def test_starting_point_outside_guisad_is_refused():
+    web = client()
+    # Session Road area, outside both barangays.
+    answer = web.get("/api/state", query_string={"lat": 16.4120, "lon": 120.5980})
+    assert answer.status_code == 400
+    assert "Guisad" in answer.get_json()["error"]
+    # Every demo marker is inside Guisad, so all of them are accepted.
+    for point in server.network.points.values():
+        assert web.get("/api/state", query_string={"lat": point["lat"], "lon": point["lon"]}).status_code == 200
+
+
+def test_roads_are_marked_inside_or_outside_guisad():
+    segments = client().get("/api/network").get_json()["segments"]
+    inside = sum(1 for segment in segments if segment["in_study_area"])
+    # Guisad is a small part of the downloaded area, but it does contain roads.
+    assert 0 < inside < len(segments) / 2
+
+
 def test_critical_endpoint_returns_rows():
     rows = client().get("/api/critical?mode=vehicle").get_json()
     assert rows and {"segment", "isolated", "added_s"} <= set(rows[0])

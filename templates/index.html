@@ -52,6 +52,7 @@
     <div class="small">
       <span class="key" style="background:#555"></span>Road usable in this mode<br>
       <span class="key" style="background:#c9c9c9"></span>Footpath (not usable by vehicles)<br>
+      <span class="key" style="background:#555;opacity:0.3"></span>Outside Guisad (used only to reach destinations)<br>
       <span class="key" style="background:#e00000"></span>Closed road<br>
       <span class="key" style="background:#1a56c4"></span>Current route<br>
       <span class="key" style="background:#f39c12"></span>Route before closures<br>
@@ -115,15 +116,23 @@ function styleRoad(segment) {
   if (closed.has(segment.id)) return { color: "#e00000", weight: 6, opacity: 1 };
   if (route.has(segment.id)) return { color: "#1a56c4", weight: 6, opacity: 1 };
   if (before.has(segment.id)) return { color: "#f39c12", weight: 5, opacity: 0.9 };
-  if (choice.mode === "vehicle" && !segment.drivable) return { color: "#c9c9c9", weight: 1, opacity: 0.7 };
-  return { color: "#555", weight: segment.drivable ? 2 : 1.5, opacity: 0.85 };
+  // Roads outside Guisad are only used to reach outside destinations, so they are faint.
+  const fade = segment.in_study_area ? 1 : 0.3;
+  if (choice.mode === "vehicle" && !segment.drivable) return { color: "#c9c9c9", weight: 1, opacity: 0.7 * fade };
+  return { color: "#555", weight: segment.drivable ? 2 : 1.5, opacity: 0.85 * fade };
 }
 
-// Sets the starting point, then updates the results.
-function setStart(lat, lon) {
+// Sets the starting point, then updates the results. The backend refuses spots
+// outside Guisad, and then the previous starting point is kept.
+async function setStart(lat, lon) {
+  const previous = [choice.lat, choice.lon];
   choice.lat = lat;
   choice.lon = lon;
-  refresh();
+  const error = await refresh();
+  if (error) {
+    [choice.lat, choice.lon] = previous;
+    document.getElementById("status").innerHTML = `<div class="warn">${safe(error)}</div>`;
+  }
 }
 
 // Makes a map marker clickable. In "close" mode a marker must not block the road
@@ -272,11 +281,14 @@ function showStatus(state) {
 }
 
 // Asks the backend for the current results, then displays them.
+// Returns the backend's error message if it refused the request.
 async function refresh() {
   const query = { mode: choice.mode, target: choice.target };
   // Include the start only once one has been chosen.
   if (choice.lat !== null) { query.lat = choice.lat; query.lon = choice.lon; }
-  showState(await api("/api/state?" + new URLSearchParams(query).toString()));
+  const state = await api("/api/state?" + new URLSearchParams(query).toString());
+  if (state.error) return state.error;
+  showState(state);
 }
 
 // Selects a destination in the menu and updates the results.

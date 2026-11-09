@@ -69,10 +69,12 @@ def read_start():
     lon = request.args.get("lon")
     if lat is None or lon is None:
         return None
+    # float() raises ValueError by itself if the text is not a number.
     lat, lon = float(lat), float(lon)
-    # Reject positions that are not on Earth. The comparison also rejects NaN.
-    if not (-90 <= lat <= 90 and -180 <= lon <= 180):
-        raise ValueError("Coordinates are out of range")
+    # Starting points stand for puroks, so they must be inside the study area.
+    # This also rejects nonsense values such as NaN or positions off the map.
+    if network.barangay_at(lat, lon) is None:
+        raise ValueError("Choose a starting point inside Guisad Central or Guisad Surong.")
     return lat, lon
 
 
@@ -87,7 +89,8 @@ def get_network():
     """Sends everything that does not change: roads, points, destinations and settings."""
     return jsonify({
         "segments": [
-            {key: segment[key] for key in ("id", "line", "drivable", "name", "highway", "length_m")}
+            {**{key: segment[key] for key in ("id", "line", "drivable", "name", "highway", "length_m")},
+             "in_study_area": network.in_study_area[segment["id"]]}
             for segment in network.segments.values()
         ],
         "boundaries": network.boundaries,
@@ -110,8 +113,10 @@ def get_state():
     mode, target = choices
     try:
         start_position = read_start()
-    except ValueError:
-        return jsonify({"error": "Invalid map position"}), 400
+    except ValueError as problem:
+        # The message is shown on the page, so it should make sense to a user.
+        message = str(problem) if "Guisad" in str(problem) else "Invalid map position"
+        return jsonify({"error": message}), 400
 
     # Which demo points are cut off now. The page uses this to color the markers.
     cut_off = [point_id for point_id, seconds in isolation_report(network, mode, target).items() if seconds is None]
