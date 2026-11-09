@@ -39,7 +39,6 @@ class DStarLite:
         self.queue = []  # priority queue of junctions needing repair
         self.queued_key = {}  # each queued junction's current key, to spot old entries
         self.km = 0.0  # correction added to keys when the start position moves
-        self.last_start = start  # where the start was at the last key correction
         self.expanded = 0  # counts repaired junctions, to show how much work was done
         # The fastest possible speed, so the heuristic never overestimates the time.
         self.max_speed = network.speed_mps[mode]
@@ -162,7 +161,6 @@ class DStarLite:
         # in the queue, km adds the same correction to all future keys.
         self.km += self._h(new_start)
         self.start = new_start
-        self.last_start = new_start
 
     def plan(self, closed_now):
         """Updates for the current closures, then returns the route and its statistics."""

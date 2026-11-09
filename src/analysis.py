@@ -13,28 +13,21 @@ def search_graph(network, mode, intact=False):
     return network.reversed_intact[mode] if intact else network.reversed_open[mode]
 
 
-def travel_times(network, mode, target="any", intact=False):
-    """Runs one Dijkstra search outward from ALL chosen destinations, along reversed roads.
-
-    Returns (times, paths). Any junction missing from `times` has no open route to
-    a destination. Searching once from the destinations is much faster than
-    searching separately from every point.
-    """
-    goals = network.goals(mode, target)
-    # Nothing can be reached if no destination of that type exists.
-    if not goals:
-        return {}, {}
-    # multi_source_dijkstra starts from several junctions at the same time, so each
-    # junction ends up with its travel time to whichever destination is nearest.
-    return nx.multi_source_dijkstra(search_graph(network, mode, intact), goals, weight="time_s")
-
-
 def isolation_report(network, mode, target="any", intact=False):
     """Returns the time, in seconds, from each point to its nearest destination.
 
     A value of None means the point is ISOLATED, with no open route to any destination.
+    One Dijkstra search runs outward from ALL chosen destinations, along reversed
+    roads, which is much faster than searching separately from every point.
     """
-    times, _ = travel_times(network, mode, target, intact)
+    goals = network.goals(mode, target)
+    # This version of Dijkstra starts from several junctions at the same time, so each
+    # junction gets its time to whichever destination is nearest. With no destinations,
+    # nothing can be reached. Only times are needed, so it skips building the paths.
+    times = (
+        nx.multi_source_dijkstra_path_length(search_graph(network, mode, intact), goals, weight="time_s")
+        if goals else {}
+    )
     # .get() returns None when the point's junction was never reached by the search.
     return {
         point_id: times.get(point["node"][mode])

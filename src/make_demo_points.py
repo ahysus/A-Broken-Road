@@ -11,7 +11,7 @@ import networkx as nx
 
 import config
 from analysis import dijkstra_route
-from network import RoadNetwork, distance_m
+from network import RoadNetwork, distance_m, read_json
 
 # The largest number of roads a demo closure may close at once.
 MAX_CUT_SIZE = 3
@@ -51,10 +51,8 @@ def find_cuts(network, barangay_of):
 
 
 def main():
-    with open(config.NETWORK_FILE, encoding="utf-8") as file:
-        data = json.load(file)
-    with open(config.DESTINATIONS_FILE, encoding="utf-8") as file:
-        destinations = json.load(file)
+    data = read_json(config.NETWORK_FILE)
+    destinations = read_json(config.DESTINATIONS_FILE)
     # Build the network with no points yet, because this file is choosing them.
     network = RoadNetwork(data, [], destinations)
     vehicle = network.graphs["vehicle"]

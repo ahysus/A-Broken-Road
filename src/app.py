@@ -1,14 +1,12 @@
 """The web server. It connects the backend to the page.  Start it with:  python src/app.py"""
 
-import json
-
 # Flask receives requests from the browser and sends back answers.
 from flask import Flask, jsonify, render_template, request
 
 import config
 from analysis import describe_path, destination_names, isolation_report, rank_critical_roads, route_from_node
 from dstar_lite import DStarLite
-from network import MODES, distance_m, load_network
+from network import MODES, distance_m, load_network, read_json
 
 # Tell Flask where the page and its supporting files are.
 app = Flask(__name__, template_folder=str(config.ROOT / "templates"), static_folder=str(config.ROOT / "static"))
@@ -18,8 +16,7 @@ app = Flask(__name__, template_folder=str(config.ROOT / "templates"), static_fol
 network = load_network()
 
 # Read the prepared demo closures.
-with open(config.DATA_DIR / "scenarios.json", encoding="utf-8") as file:
-    scenarios = json.load(file)
+scenarios = read_json(config.DATA_DIR / "scenarios.json")
 
 # Finished D* Lite planners are kept here, so each one can reuse its earlier work.
 planners = {}
@@ -50,6 +47,16 @@ def dstar_route(mode, target, start):
 def without_nodes(route):
     """Removes the junction list, because the page draws routes from segment ids."""
     return {key: value for key, value in route.items() if key != "nodes"}
+
+
+def read_choices():
+    """Reads the travel mode and destination. Returns None if either is not a real option."""
+    # Use the defaults if the request leaves them out.
+    mode = request.args.get("mode", "vehicle")
+    target = request.args.get("target", "any")
+    if mode not in MODES or not network.is_valid_target(target):
+        return None
+    return mode, target
 
 
 def read_start():
@@ -89,7 +96,6 @@ def get_network():
             {key: place[key] for key in ("id", "name", "type", "lat", "lon", "source")}
             for place in network.destinations.values()
         ],
-        "scenarios": [scenario["name"] for scenario in scenarios],
         "speeds": {"vehicle": config.VEHICLE_SPEED_KPH, "walking": config.WALKING_SPEED_KPH},
     })
 
@@ -97,22 +103,18 @@ def get_network():
 @app.route("/api/state")
 def get_state():
     """Sends the current results for the chosen mode, destination and starting position."""
-    # Read the page's choices from the web address, with defaults if they are missing.
-    mode = request.args.get("mode", "vehicle")
-    target = request.args.get("target", "any")
     # Reject anything that is not a real option, rather than crash on it.
-    if mode not in MODES or not network.is_valid_target(target):
+    choices = read_choices()
+    if choices is None:
         return jsonify({"error": "Unknown mode or destination"}), 400
+    mode, target = choices
     try:
         start_position = read_start()
     except ValueError:
         return jsonify({"error": "Invalid map position"}), 400
 
     # Which demo points are cut off now. The page uses this to color the markers.
-    cut_off = {
-        each: [point_id for point_id, seconds in isolation_report(network, each, target).items() if seconds is None]
-        for each in MODES
-    }
+    cut_off = [point_id for point_id, seconds in isolation_report(network, mode, target).items() if seconds is None]
     state = {"closed": sorted(network.closed), "cut_off": cut_off, "start": None}
 
     if start_position is not None:
@@ -120,10 +122,7 @@ def get_state():
         # Connect the clicked position to the nearest junction in this mode's graph.
         start = network.nearest_node(lat, lon, mode)
         place = network.nodes[start]
-        # Also check the other mode, so the page can offer it if this mode has no route.
-        other_mode = "walking" if mode == "vehicle" else "vehicle"
-        other_start = network.nearest_node(lat, lon, other_mode)
-        other_route = route_from_node(network, other_mode, other_start, target)
+        route = route_from_node(network, mode, start, target)
         state.update({
             "start": {
                 "lat": place["lat"],
@@ -131,10 +130,15 @@ def get_state():
                 "snap_m": distance_m(lat, lon, place["lat"], place["lon"]),
             },
             "before_route": without_nodes(route_from_node(network, mode, start, target, intact=True)),
-            "dijkstra": without_nodes(route_from_node(network, mode, start, target)),
+            "dijkstra": without_nodes(route),
             "dstar": without_nodes(dstar_route(mode, target, start)),
-            "other_mode": {"mode": other_mode, "found": other_route["found"], "time_s": other_route.get("time_s")},
         })
+        # With no route in this mode, check the other mode so the page can suggest it.
+        if not route["found"]:
+            other_mode = "walking" if mode == "vehicle" else "vehicle"
+            other_start = network.nearest_node(lat, lon, other_mode)
+            other_route = route_from_node(network, other_mode, other_start, target)
+            state["other_mode"] = {"mode": other_mode, "found": other_route["found"], "time_s": other_route.get("time_s")}
     return jsonify(state)
 
 
@@ -169,11 +173,10 @@ def load_scenario():
 @app.route("/api/critical")
 def critical():
     """Ranks the roads whose closure would do the most harm."""
-    mode = request.args.get("mode", "vehicle")
-    target = request.args.get("target", "any")
-    if mode not in MODES or not network.is_valid_target(target):
+    choices = read_choices()
+    if choices is None:
         return jsonify({"error": "Unknown mode or destination"}), 400
-    return jsonify(rank_critical_roads(network, mode, target))
+    return jsonify(rank_critical_roads(network, *choices))
 
 
 # Run the server only when this file is started directly.

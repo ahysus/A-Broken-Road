@@ -159,12 +159,16 @@ class RoadNetwork:
             self.set_closed(segment_id, False)
 
 
+def read_json(path):
+    """Reads one saved JSON file."""
+    with open(path, encoding="utf-8") as file:
+        return json.load(file)
+
+
 def load_network():
     """Reads the saved files and returns a ready-to-use RoadNetwork."""
-    with open(config.NETWORK_FILE, encoding="utf-8") as file:
-        network_data = json.load(file)
-    with open(config.POINTS_FILE, encoding="utf-8") as file:
-        points = json.load(file)
-    with open(config.DESTINATIONS_FILE, encoding="utf-8") as file:
-        destinations = json.load(file)
-    return RoadNetwork(network_data, points, destinations)
+    return RoadNetwork(
+        read_json(config.NETWORK_FILE),
+        read_json(config.POINTS_FILE),
+        read_json(config.DESTINATIONS_FILE),
+    )

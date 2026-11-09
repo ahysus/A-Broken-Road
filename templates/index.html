@@ -20,9 +20,6 @@
   label { display: block; margin-bottom: 5px; }
   select { width: 100%; padding: 3px; }
   button { padding: 5px 8px; margin: 2px 2px 2px 0; cursor: pointer; }
-  table { border-collapse: collapse; width: 100%; font-size: 13px; }
-  th, td { border: 1px solid #ccc; padding: 3px 5px; text-align: left; vertical-align: top; }
-  th { background: #f2f2f2; }
   .warn { background: #fde7ea; border: 1px solid #b00020; padding: 6px; margin: 6px 0; }
   .ok { background: #e6f4e8; border: 1px solid #2e7d32; padding: 6px; margin: 6px 0; }
   .hint { background: #eaf1fb; border: 1px solid #1a56c4; padding: 6px; margin: 6px 0; }
@@ -49,21 +46,7 @@
     <button id="reset">Reopen all roads</button>
     <span id="closedCount" class="small"></span>
 
-    <h2>Route</h2>
-    <div id="routeSummary"></div>
-
-    <h2>Dijkstra compared with D* Lite</h2>
-    <div id="comparison"></div>
-
-    <h2>Isolation check</h2>
-    <div id="isolation"></div>
-
-    <h2>Demo closures</h2>
-    <div id="scenarios"></div>
-
-    <h2>Critical roads</h2>
-    <button id="rank">Rank roads for this mode</button>
-    <div id="critical"></div>
+    <div id="status"></div>
 
     <h2>Map key</h2>
     <div class="small">
@@ -117,9 +100,8 @@ function safe(text) {
   return holder.innerHTML;
 }
 
-// Formats values for reading aloud in the demo.
+// Formats a travel time for reading aloud in the demo.
 const minutes = (seconds) => (seconds / 60).toFixed(1) + " min";
-const km = (meters) => (meters / 1000).toFixed(2) + " km";
 
 // Tells which click tool is selected: "start" or "close".
 const currentTool = () => document.querySelector('input[name="tool"]:checked').value;
@@ -142,6 +124,16 @@ function setStart(lat, lon) {
   choice.lat = lat;
   choice.lon = lon;
   refresh();
+}
+
+// Makes a map marker clickable. In "close" mode a marker must not block the road
+// underneath it, so the click goes to that road instead of running the marker's action.
+function onMarkerClick(marker, action) {
+  marker.on("click", (event) => {
+    L.DomEvent.stopPropagation(event);
+    if (currentTool() === "close") closeRoadAt(event.latlng);
+    else action();
+  });
 }
 
 // Finds the road closest to a map position, or null if none is close enough.
@@ -211,22 +203,13 @@ function drawMap() {
   for (const place of network.destinations) {
     const marker = L.circleMarker([place.lat, place.lon], { radius: 7, color: "#4a148c", fillColor: "#8e24aa", fillOpacity: 1, weight: 1 })
       .bindTooltip(`${safe(place.name)} (${safe(place.type)})<br>${safe(place.source)}`).addTo(map);
-    marker.on("click", (event) => {
-      L.DomEvent.stopPropagation(event);
-      // In "close" mode, a marker must not block the road underneath it.
-      if (currentTool() === "close") closeRoadAt(event.latlng);
-      else setTarget("place:" + place.id);
-    });
+    onMarkerClick(marker, () => setTarget("place:" + place.id));
   }
   // Draw the demo markers. Their color is the isolation check. Clicking one starts from there.
   for (const point of network.points) {
     const marker = L.circleMarker([point.lat, point.lon], { radius: 6, color: "#000", weight: 1, fillColor: "#2e9e3f", fillOpacity: 1 })
       .bindTooltip(point.name).addTo(map);
-    marker.on("click", (event) => {
-      L.DomEvent.stopPropagation(event);
-      if (currentTool() === "close") closeRoadAt(event.latlng);
-      else setStart(point.lat, point.lon);
-    });
+    onMarkerClick(marker, () => setStart(point.lat, point.lon));
     pointMarkers[point.id] = marker;
   }
   // Zoom to fit Guisad.
@@ -255,26 +238,22 @@ function showState(state) {
   if (state.start && state.dijkstra.found) for (const id of state.dijkstra.segments) roadLines[id].line.bringToFront();
   for (const id of closed) roadLines[id].line.bringToFront();
   // Recolor the demo markers using this mode's isolation result.
-  const cutOff = new Set(state.cut_off[choice.mode]);
+  const cutOff = new Set(state.cut_off);
   for (const [id, marker] of Object.entries(pointMarkers)) {
     marker.setStyle({ fillColor: cutOff.has(id) ? "#e00000" : "#2e9e3f" });
   }
-  const total = network.points.length;
-  document.getElementById("isolation").innerHTML =
-    `<b>${cutOff.size} of ${total}</b> demo markers cut off for ${choice.mode === "vehicle" ? "vehicles" : "walking"} (red on the map).`;
   drawStart(state);
-  showRoute(state);
-  showComparison(state);
+  showStatus(state);
 }
 
-// Writes the plain-language result for the chosen start and destination.
-function showRoute(state) {
-  const area = document.getElementById("routeSummary");
+// Shows a message only when the map alone would not explain what is happening.
+function showStatus(state) {
+  const area = document.getElementById("status");
   if (!state.start) {
     area.innerHTML = `<div class="hint">Click the map to choose a starting point.</div>`;
     return;
   }
-  const before = state.before_route, now = state.dijkstra;
+  const now = state.dijkstra;
   // Warn if the click was far from any usable road, since the route starts at that road.
   const far = state.start.snap_m > 100
     ? `<div class="warn">Nearest usable road is ${Math.round(state.start.snap_m)} m from this spot, so the route starts there.</div>` : "";
@@ -287,40 +266,9 @@ function showRoute(state) {
     return;
   }
   // A start connected to the destination's own junction has no route to draw.
-  if (now.segments.length === 0) {
-    area.innerHTML = `<div class="hint">This spot connects directly to ${safe(now.destination.join(", "))}, so no travel is needed. Click farther away, or choose another destination.</div>`;
-    return;
-  }
-  const addedTime = before.found ? now.time_s - before.time_s : 0;
-  const addedDistance = before.found ? now.length_m - before.length_m : 0;
-  area.innerHTML = far + `<table>
-    <tr><th></th><th>Before closures</th><th>Now</th></tr>
-    <tr><th>Goes to</th><td>${safe(before.destination.join(", "))}</td><td>${safe(now.destination.join(", "))}</td></tr>
-    <tr><th>Distance</th><td>${km(before.length_m)}</td><td>${km(now.length_m)}</td></tr>
-    <tr><th>Time</th><td>${minutes(before.time_s)}</td><td>${minutes(now.time_s)}</td></tr>
-    <tr><th>Added</th><td></td><td><b>+${km(addedDistance)}, +${minutes(addedTime)}</b></td></tr></table>`;
-}
-
-// Shows the two algorithms side by side.
-function showComparison(state) {
-  const area = document.getElementById("comparison");
-  if (!state.start) {
-    area.innerHTML = `<div class="small">Appears after you choose a starting point.</div>`;
-    return;
-  }
-  const a = state.dijkstra, b = state.dstar;
-  if (!a.found && !b.found) {
-    area.innerHTML = `<div class="small">Both agree that no route exists. Dijkstra: ${a.ms.toFixed(2)} ms. D* Lite: ${b.ms.toFixed(2)} ms (${b.expanded} junctions repaired).</div>`;
-    return;
-  }
-  const difference = a.time_s > 0 ? Math.abs(b.time_s - a.time_s) / a.time_s * 100 : 0;
-  area.innerHTML = `<table>
-    <tr><th></th><th>Dijkstra</th><th>D* Lite</th></tr>
-    <tr><th>Route time</th><td>${a.time_s.toFixed(1)} s</td><td>${b.time_s.toFixed(1)} s</td></tr>
-    <tr><th>Search time</th><td>${a.ms.toFixed(2)} ms</td><td>${b.ms.toFixed(2)} ms ${b.first_search ? "(first search)" : "(replan)"}</td></tr>
-    <tr><th>Work</th><td>Searches again</td><td>${b.expanded} junctions repaired</td></tr>
-    <tr><th>Difference</th><td colspan="2">${difference.toFixed(2)}% in route time (target: within 5%)</td></tr></table>
-    <div class="small">Timings are from this one run on this computer, not test results.</div>`;
+  const atDestination = now.segments.length === 0
+    ? `<div class="hint">This spot connects directly to ${safe(now.destination.join(", "))}, so no travel is needed. Click farther away, or choose another destination.</div>` : "";
+  area.innerHTML = far + atDestination;
 }
 
 // Asks the backend for the current results, then displays them.
@@ -361,26 +309,6 @@ function connectControls() {
   document.getElementById("mode").onchange = (event) => { choice.mode = event.target.value; refresh(); };
   document.getElementById("target").onchange = (event) => setTarget(event.target.value);
   document.getElementById("reset").onclick = async () => { await api("/api/reset", {}); await refresh(); };
-  document.getElementById("scenarios").innerHTML = network.scenarios.map((name, index) =>
-    `<button data-scenario="${index}">${safe(name)}</button>`).join("<br>");
-  document.querySelectorAll("button[data-scenario]").forEach((button) => {
-    button.onclick = async () => {
-      const answer = await api("/api/scenario", { index: Number(button.dataset.scenario) });
-      // A demo closure comes with the start it was chosen for, and uses the nearest destination.
-      choice.lat = answer.lat;
-      choice.lon = answer.lon;
-      setTarget("any");
-    };
-  });
-  document.getElementById("rank").onclick = async () => {
-    const area = document.getElementById("critical");
-    area.textContent = "Calculating...";
-    const query = new URLSearchParams({ mode: choice.mode, target: choice.target }).toString();
-    const rows = await api("/api/critical?" + query);
-    area.innerHTML = `<table><tr><th>#</th><th>Road</th><th>Markers cut off</th><th>Added time, all markers</th></tr>` +
-      rows.map((row, index) => `<tr><td>${index + 1}</td><td>${safe(row.name || "Unnamed")} (segment ${row.segment})</td><td>${row.isolated}</td><td>${minutes(row.added_s)}</td></tr>`).join("") +
-      `</table><div class="small">Based on demo markers, so this shows the method only.</div>`;
-  };
   document.getElementById("assumptions").textContent =
     `Assumed speeds: vehicle ${network.speeds.vehicle} km/h, walking ${network.speeds.walking} km/h. Facilities unverified.`;
 }

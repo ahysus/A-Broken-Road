@@ -29,11 +29,10 @@ def test_page_and_map_library_load():
     assert web.get("/static/leaflet/leaflet.css").status_code == 200
 
 
-def test_network_lists_roads_points_and_scenarios():
+def test_network_lists_roads_and_points():
     data = client().get("/api/network").get_json()
     assert len(data["segments"]) > 1000
     assert len(data["points"]) == 10
-    assert len(data["scenarios"]) == 3
     # Every demo marker has to stay clearly labeled as a demo.
     assert all(point["name"].startswith("Demo Point") for point in data["points"])
 
@@ -42,7 +41,7 @@ def test_no_start_chosen_returns_no_route_but_still_checks_isolation():
     answer = state(client())
     assert answer["start"] is None
     assert "dijkstra" not in answer
-    assert answer["cut_off"] == {"vehicle": [], "walking": []}
+    assert answer["cut_off"] == []
 
 
 def test_clicking_any_spot_gives_a_route():
@@ -99,7 +98,7 @@ def test_scenario_a_shows_vehicle_cut_off_with_walking_route():
     assert answer["dijkstra"]["found"] is False
     assert answer["dstar"]["found"] is False
     assert answer["other_mode"]["found"] is True
-    assert answer["cut_off"]["vehicle"]
+    assert answer["cut_off"]
 
 
 def test_reset_clears_closures():
