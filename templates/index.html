@@ -370,6 +370,10 @@ function connectControls() {
     choice.target = "any";
     document.getElementById("target").value = "any";
     await setStart(answer.lat, answer.lon);
+    // Move the map so the closed roads and the starting point are both in view.
+    const closedLines = [...closed].map((id) => roadLines[id].line);
+    const view = L.featureGroup([startMarker, ...closedLines]).getBounds();
+    map.fitBounds(view.pad(1.5), { maxZoom: 17 });
   };
   document.getElementById("assumptions").textContent =
     `Assumed speeds: vehicle ${network.speeds.vehicle} km/h, walking ${network.speeds.walking} km/h. Facilities unverified.`;
