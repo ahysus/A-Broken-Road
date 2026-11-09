@@ -24,8 +24,12 @@
   .ok { background: #e6f4e8; border: 1px solid #2e7d32; padding: 6px; margin: 6px 0; }
   .hint { background: #eaf1fb; border: 1px solid #1a56c4; padding: 6px; margin: 6px 0; }
   .small { font-size: 12px; color: #555; }
-  .key { display: inline-block; width: 18px; height: 4px; vertical-align: middle; margin-right: 4px; }
-  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; margin-right: 4px; }
+  /* Each map key row: a fixed-width box for the sample, then its label. */
+  .keyRow { display: flex; align-items: center; margin: 3px 0; }
+  .sample { width: 30px; flex: none; display: flex; justify-content: center; margin-right: 6px; }
+  .line { width: 28px; }
+  .dot { border-radius: 50%; box-sizing: border-box; }
+  #assumptions { margin-top: 6px; }
 </style>
 </head>
 <body>
@@ -49,19 +53,8 @@
     <div id="status"></div>
 
     <h2>Map key</h2>
-    <div class="small">
-      <span class="key" style="background:#555"></span>Road usable in this mode<br>
-      <span class="key" style="background:#c9c9c9"></span>Footpath (not usable by vehicles)<br>
-      <span class="key" style="background:#555;opacity:0.3"></span>Outside Guisad (used only to reach destinations)<br>
-      <span class="key" style="background:#e00000"></span>Closed road<br>
-      <span class="key" style="background:#1a56c4"></span>Current route<br>
-      <span class="key" style="background:#f39c12"></span>Route before closures<br>
-      <span class="dot" style="background:#1a56c4"></span>Starting point
-      <span class="dot" style="background:#8e24aa"></span>Destination<br>
-      <span class="dot" style="background:#2e9e3f"></span>Demo marker connected
-      <span class="dot" style="background:#e00000"></span>Demo marker cut off<br>
-      <span id="assumptions"></span>
-    </div>
+    <div id="mapKey" class="small"></div>
+    <div id="assumptions" class="small"></div>
   </div>
   <div id="map"></div>
 </div>
@@ -253,6 +246,41 @@ function showState(state) {
   }
   drawStart(state);
   showStatus(state);
+  showMapKey(state);
+}
+
+// A map key sample drawn like a road on the map: same color, thickness and opacity.
+const lineSample = (color, weight, opacity) =>
+  `<span class="line" style="height:${weight}px;background:${color};opacity:${opacity}"></span>`;
+
+// A map key sample drawn like a marker on the map: same size, fill and border.
+const dotSample = (fill, radius, border, borderWidth) =>
+  `<span class="dot" style="width:${radius * 2}px;height:${radius * 2}px;background:${fill};border:${borderWidth}px solid ${border}"></span>`;
+
+// Builds the map key, listing only what is actually on the map right now.
+function showMapKey(state) {
+  const rows = [];
+  const add = (sample, label) =>
+    rows.push(`<div class="keyRow"><span class="sample">${sample}</span>${label}</div>`);
+  const hasRoute = state.start && state.dijkstra.found && state.dijkstra.segments.length > 0;
+  // The orange "before" route shows only where it differs from the current route.
+  const current = new Set(hasRoute ? state.dijkstra.segments : []);
+  const hadRoute = state.start && state.before_route.found;
+  const beforeVisible = hadRoute && state.before_route.segments.some((id) => !current.has(id) && !closed.has(id));
+
+  add(lineSample("#555", 2, 0.85), choice.mode === "vehicle" ? "Road a vehicle can use" : "Road or path a walker can use");
+  if (choice.mode === "vehicle") add(lineSample("#c9c9c9", 2, 0.7), "Footpath or stairs (walkers only)");
+  add(lineSample("#555", 2, 0.85 * 0.3), "Outside Guisad (used only to reach destinations)");
+  add(`<span class="line" style="height:0;border-top:2px dashed #1f7a8c"></span>`, "Guisad Central and Guisad Surong boundary");
+  if (hasRoute) add(lineSample("#1a56c4", 6, 1), "Current route");
+  if (beforeVisible) add(lineSample("#f39c12", 5, 0.9), "Route before closures");
+  if (closed.size) add(lineSample("#e00000", 6, 1), "Closed road");
+  if (state.start) add(dotSample("#1a56c4", 9, "#fff", 3), "Starting point");
+  add(dotSample("#8e24aa", 7, "#4a148c", 1), "Destination (click to select)");
+  add(dotSample("#2e9e3f", 6, "#000", 1), "Demo marker, connected");
+  if (state.cut_off.length) add(dotSample("#e00000", 6, "#000", 1), "Demo marker, cut off");
+  if (currentTool() === "close") add(lineSample("#ff00c8", 7, 0.8), "Road under the cursor (click to close or reopen)");
+  document.getElementById("mapKey").innerHTML = rows.join("");
 }
 
 // Shows a message only when the map alone would not explain what is happening.
@@ -316,7 +344,7 @@ function connectControls() {
   fillDestinationMenu();
   // Remove the road highlight when switching back to setting the starting point.
   document.querySelectorAll('input[name="tool"]').forEach((radio) => {
-    radio.onchange = () => showPreview(null);
+    radio.onchange = () => { showPreview(null); showMapKey(lastState); };
   });
   document.getElementById("mode").onchange = (event) => { choice.mode = event.target.value; refresh(); };
   document.getElementById("target").onchange = (event) => setTarget(event.target.value);
