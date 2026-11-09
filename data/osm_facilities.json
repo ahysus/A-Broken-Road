@@ -1,19 +1,5 @@
 [
   {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.408836,
-    "lon": 120.580023,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.408595,
-    "lon": 120.580336,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
     "name": "Baguio Fire Volunteers",
     "type": "fire station",
     "lat": 16.412325,
@@ -84,27 +70,6 @@
     "source": "OpenStreetMap, unverified"
   },
   {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.408435,
-    "lon": 120.580027,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Prayer House of Charity",
-    "type": "evacuation center",
-    "lat": 16.408616,
-    "lon": 120.579705,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Prayer House of Faith",
-    "type": "evacuation center",
-    "lat": 16.408507,
-    "lon": 120.579896,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
     "name": "City Camp Central Barangay Hall",
     "type": "barangay hall",
     "lat": 16.411203,
@@ -123,6 +88,13 @@
     "type": "barangay hall",
     "lat": 16.412868,
     "lon": 120.590266,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Santo Rosario Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.401707,
+    "lon": 120.587206,
     "source": "OpenStreetMap, unverified"
   },
   {
@@ -224,10 +196,31 @@
     "source": "OpenStreetMap, unverified"
   },
   {
+    "name": "Poliwes Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.39611,
+    "lon": 120.599265,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Hillside Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.397344,
+    "lon": 120.604337,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
     "name": "Happy Homes - Old Lucban Barangay Hall",
     "type": "barangay hall",
     "lat": 16.425886,
     "lon": 120.593894,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Imelda Marcos Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.401658,
+    "lon": 120.590198,
     "source": "OpenStreetMap, unverified"
   },
   {
@@ -242,6 +235,13 @@
     "type": "barangay hall",
     "lat": 16.405172,
     "lon": 120.604118,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Military Cut-off Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.402173,
+    "lon": 120.597773,
     "source": "OpenStreetMap, unverified"
   },
   {
@@ -308,6 +308,13 @@
     "source": "OpenStreetMap, unverified"
   },
   {
+    "name": "Ferdinand Marcos Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.401637,
+    "lon": 120.590246,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
     "name": "Kayang Extension Barangay Hall",
     "type": "barangay hall",
     "lat": 16.414156,
@@ -319,6 +326,13 @@
     "type": "barangay hall",
     "lat": 16.421155,
     "lon": 120.597405,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Balsigan Outpost",
+    "type": "barangay hall",
+    "lat": 16.400244,
+    "lon": 120.592616,
     "source": "OpenStreetMap, unverified"
   },
   {
@@ -375,6 +389,13 @@
     "type": "barangay hall",
     "lat": 16.415781,
     "lon": 120.580044,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Bakakeng Central Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.396462,
+    "lon": 120.58224,
     "source": "OpenStreetMap, unverified"
   },
   {
@@ -511,31 +532,17 @@
     "source": "OpenStreetMap, unverified"
   },
   {
-    "name": "Jeep/Bus Stop",
-    "type": "evacuation center",
-    "lat": 16.430804,
-    "lon": 120.571918,
+    "name": "Balsigan Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.398691,
+    "lon": 120.593628,
     "source": "OpenStreetMap, unverified"
   },
   {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.410442,
-    "lon": 120.597418,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.416183,
-    "lon": 120.604932,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.426235,
-    "lon": 120.593013,
+    "name": "Baguio General Hospital & Medical Center",
+    "type": "hospital",
+    "lat": 16.401062,
+    "lon": 120.596225,
     "source": "OpenStreetMap, unverified"
   },
   {
@@ -567,6 +574,13 @@
     "source": "OpenStreetMap, unverified"
   },
   {
+    "name": "Baguio Medical Center",
+    "type": "hospital",
+    "lat": 16.40197,
+    "lon": 120.597539,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
     "name": "Andres Bonifacio - Caguioa - Rimando Barangay Hall",
     "type": "barangay hall",
     "lat": 16.420401,
@@ -588,356 +602,6 @@
     "source": "OpenStreetMap, unverified"
   },
   {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.407072,
-    "lon": 120.60305,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.410599,
-    "lon": 120.603531,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.421536,
-    "lon": 120.593127,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.417334,
-    "lon": 120.599638,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.419331,
-    "lon": 120.600795,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.417266,
-    "lon": 120.603875,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.422212,
-    "lon": 120.600862,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.424219,
-    "lon": 120.604602,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.427473,
-    "lon": 120.603539,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.425504,
-    "lon": 120.60383,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.426701,
-    "lon": 120.591533,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.422598,
-    "lon": 120.590055,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.422819,
-    "lon": 120.586785,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.418757,
-    "lon": 120.585857,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.418489,
-    "lon": 120.586376,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.418981,
-    "lon": 120.587096,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.41945,
-    "lon": 120.588017,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.417826,
-    "lon": 120.586689,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.416601,
-    "lon": 120.586365,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Welcome Cresencia Village Barangay",
-    "type": "evacuation center",
-    "lat": 16.41648,
-    "lon": 120.588524,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.417594,
-    "lon": 120.588624,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.41473,
-    "lon": 120.583282,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.420821,
-    "lon": 120.583023,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.420958,
-    "lon": 120.583736,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.416168,
-    "lon": 120.57802,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.414454,
-    "lon": 120.578633,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.414003,
-    "lon": 120.579991,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.415363,
-    "lon": 120.58532,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.419374,
-    "lon": 120.576904,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.425998,
-    "lon": 120.579682,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.410992,
-    "lon": 120.581712,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.407836,
-    "lon": 120.588663,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.409214,
-    "lon": 120.584625,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.408356,
-    "lon": 120.583353,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.407657,
-    "lon": 120.585066,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.405649,
-    "lon": 120.583789,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.406864,
-    "lon": 120.581975,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "San Roque West",
-    "type": "evacuation center",
-    "lat": 16.410803,
-    "lon": 120.579037,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Diamond Subdivision",
-    "type": "evacuation center",
-    "lat": 16.410232,
-    "lon": 120.578471,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.409169,
-    "lon": 120.598269,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.405973,
-    "lon": 120.575578,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.406296,
-    "lon": 120.599641,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.419102,
-    "lon": 120.598301,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.415911,
-    "lon": 120.575337,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.431299,
-    "lon": 120.584912,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.428226,
-    "lon": 120.581857,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.42519,
-    "lon": 120.594291,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Ridgepark Residences",
-    "type": "evacuation center",
-    "lat": 16.407146,
-    "lon": 120.577943,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.409445,
-    "lon": 120.601069,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.410111,
-    "lon": 120.60068,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
     "name": "Sacred Heart Medical Center",
     "type": "hospital",
     "lat": 16.41726,
@@ -949,216 +613,6 @@
     "type": "hospital",
     "lat": 16.415296,
     "lon": 120.598661,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.407013,
-    "lon": 120.597893,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.409422,
-    "lon": 120.602996,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.405243,
-    "lon": 120.599372,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.418487,
-    "lon": 120.604326,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.418357,
-    "lon": 120.602402,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.417819,
-    "lon": 120.603099,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.413015,
-    "lon": 120.573945,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.415625,
-    "lon": 120.589472,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.417716,
-    "lon": 120.594931,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.418874,
-    "lon": 120.589293,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.418783,
-    "lon": 120.58583,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.419995,
-    "lon": 120.585288,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.420026,
-    "lon": 120.585445,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.405994,
-    "lon": 120.585025,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.416172,
-    "lon": 120.574217,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.416442,
-    "lon": 120.575523,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.419317,
-    "lon": 120.576787,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.408246,
-    "lon": 120.587985,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.410168,
-    "lon": 120.600783,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.409198,
-    "lon": 120.601887,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.408278,
-    "lon": 120.597544,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.431788,
-    "lon": 120.575262,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.419735,
-    "lon": 120.58907,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.41015,
-    "lon": 120.580972,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.410081,
-    "lon": 120.581035,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.41,
-    "lon": 120.581198,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.421722,
-    "lon": 120.604681,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.408177,
-    "lon": 120.579654,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.408184,
-    "lon": 120.587097,
-    "source": "OpenStreetMap, unverified"
-  },
-  {
-    "name": "Unnamed evacuation center",
-    "type": "evacuation center",
-    "lat": 16.417518,
-    "lon": 120.57734,
     "source": "OpenStreetMap, unverified"
   },
   {

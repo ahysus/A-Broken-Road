@@ -1,4 +1,5 @@
 [
+  {"id": "bgh", "name": "Baguio General Hospital and Medical Center (BGH)", "type": "hospital", "lat": 16.401599, "lon": 120.596581, "source": "OpenStreetMap (BGHMC Trauma Center building), unverified"},
   {"id": "pines", "name": "Pines City Doctors' Hospital", "type": "hospital", "lat": 16.426899, "lon": 120.594644, "source": "OpenStreetMap, unverified"},
   {"id": "slu", "name": "SLU Hospital of the Sacred Heart", "type": "hospital", "lat": 16.417352, "lon": 120.597965, "source": "OpenStreetMap, unverified"},
   {"id": "notre-dame", "name": "Notre Dame de Chartres Hospital", "type": "hospital", "lat": 16.415296, "lon": 120.598661, "source": "OpenStreetMap, unverified"},

@@ -21,7 +21,8 @@ DESTINATIONS_FILE = DATA_DIR / "destinations.json"
 # The rectangle of roads to download, as (west, south, east, north) in degrees.
 # It is wider than Guisad itself so that routes can reach hospitals and fire
 # stations outside the two barangays, and so detours can leave the barangay.
-BBOX = (120.5700, 16.4050, 120.6050, 16.4350)
+# The south edge reaches 16.3960 so it includes Baguio General Hospital (BGH).
+BBOX = (120.5700, 16.3960, 120.6050, 16.4350)
 
 # ASSUMED travel speeds, in kilometers per hour. These are placeholders, not
 # measured values. Thesis 2 should replace them, including slope for walking.

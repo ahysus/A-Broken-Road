@@ -2,26 +2,26 @@
   {
     "name": "A: vehicles cut off, walking route remains",
     "segments": [
-      2690,
-      3551,
-      3589
+      3076,
+      4037,
+      4075
     ],
     "point": "P1"
   },
   {
     "name": "B: cut off for vehicles and on foot",
     "segments": [
-      3557,
-      4317,
-      5349
+      4043,
+      4889,
+      6032
     ],
     "point": "P2"
   },
   {
     "name": "C: road closed, detour adds travel time",
     "segments": [
-      47
+      4212
     ],
-    "point": "P7"
+    "point": "P6"
   }
 ]

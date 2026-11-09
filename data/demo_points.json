@@ -42,41 +42,41 @@
   {
     "id": "P6",
     "name": "Demo Point 6",
-    "lat": 16.421777,
-    "lon": 120.587323,
+    "lat": 16.425168,
+    "lon": 120.585478,
     "barangay": "Guisad Central",
     "source": "Demo location, not a purok"
   },
   {
     "id": "P7",
     "name": "Demo Point 7",
-    "lat": 16.424198,
-    "lon": 120.584272,
-    "barangay": "Guisad Central",
+    "lat": 16.419311,
+    "lon": 120.581496,
+    "barangay": "Guisad Surong",
     "source": "Demo location, not a purok"
   },
   {
     "id": "P8",
     "name": "Demo Point 8",
-    "lat": 16.421235,
-    "lon": 120.585288,
+    "lat": 16.421777,
+    "lon": 120.587323,
     "barangay": "Guisad Central",
     "source": "Demo location, not a purok"
   },
   {
     "id": "P9",
     "name": "Demo Point 9",
-    "lat": 16.422917,
-    "lon": 120.582973,
+    "lat": 16.424198,
+    "lon": 120.584272,
     "barangay": "Guisad Central",
     "source": "Demo location, not a purok"
   },
   {
     "id": "P10",
     "name": "Demo Point 10",
-    "lat": 16.419372,
-    "lon": 120.58226,
-    "barangay": "Guisad Surong",
+    "lat": 16.421235,
+    "lon": 120.585288,
+    "barangay": "Guisad Central",
     "source": "Demo location, not a purok"
   }
 ]
