@@ -1,0 +1,4 @@
+# Needed to RUN the demo (Windows or Mac).
+flask>=3.0,<4
+networkx>=3.2,<4
+pytest>=8,<9

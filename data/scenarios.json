@@ -1,0 +1,27 @@
+[
+  {
+    "name": "A: vehicles cut off, walking route remains",
+    "segments": [
+      2690,
+      3551,
+      3589
+    ],
+    "point": "P1"
+  },
+  {
+    "name": "B: cut off for vehicles and on foot",
+    "segments": [
+      3557,
+      4317,
+      5349
+    ],
+    "point": "P2"
+  },
+  {
+    "name": "C: road closed, detour adds travel time",
+    "segments": [
+      47
+    ],
+    "point": "P7"
+  }
+]

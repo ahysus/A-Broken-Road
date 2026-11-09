@@ -1,0 +1,1178 @@
+[
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.408836,
+    "lon": 120.580023,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.408595,
+    "lon": 120.580336,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Baguio Fire Volunteers",
+    "type": "fire station",
+    "lat": 16.412325,
+    "lon": 120.591287,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Pinget Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.426825,
+    "lon": 120.585322,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Padre Burgos Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.41997,
+    "lon": 120.592023,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Kagitingan Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.416852,
+    "lon": 120.596272,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed hospital",
+    "type": "hospital",
+    "lat": 16.427376,
+    "lon": 120.600298,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Holy Ghost Extension Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.417738,
+    "lon": 120.60426,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Honeymoon-Holyghost Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.419047,
+    "lon": 120.600356,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "San Roque Village Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.412423,
+    "lon": 120.581891,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Pinsao Proper Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.421524,
+    "lon": 120.577568,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Purok 3 Outpost",
+    "type": "barangay hall",
+    "lat": 16.426236,
+    "lon": 120.592985,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.408435,
+    "lon": 120.580027,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Prayer House of Charity",
+    "type": "evacuation center",
+    "lat": 16.408616,
+    "lon": 120.579705,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Prayer House of Faith",
+    "type": "evacuation center",
+    "lat": 16.408507,
+    "lon": 120.579896,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "City Camp Central Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.411203,
+    "lon": 120.588217,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "MRR Queen of Peace Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.413646,
+    "lon": 120.587969,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Palma-Urbano Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.412868,
+    "lon": 120.590266,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Upper Market Subdivision Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.416149,
+    "lon": 120.59438,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Middle Quirino Hill Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.428922,
+    "lon": 120.591317,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Magsaysay Private Road Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.424195,
+    "lon": 120.59253,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Andres Bonifacio Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.41875,
+    "lon": 120.58533,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Campo Filipino Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.414873,
+    "lon": 120.588295,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "City Camp Proper Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.41089,
+    "lon": 120.589318,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "General F. Emilio Aguinaldo - Lower Quirino Magsaysay Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.409536,
+    "lon": 120.589031,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Lower Rock Quarry Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.408069,
+    "lon": 120.588405,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Upper Rock Quarry Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.407586,
+    "lon": 120.588167,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Middle Rock Quarry Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.408653,
+    "lon": 120.586077,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "San Luis Village Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.405698,
+    "lon": 120.576655,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Victoria Village Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.414371,
+    "lon": 120.578688,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Lourdes Subdivision Extension Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.41135,
+    "lon": 120.584936,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Fairview Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.415848,
+    "lon": 120.583803,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Happy Homes - Old Lucban Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.425886,
+    "lon": 120.593894,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "West Modernsite Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.423713,
+    "lon": 120.60388,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "DPS Compound Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.405172,
+    "lon": 120.604118,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Lower General Luna Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.413609,
+    "lon": 120.599288,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Kabayanihan Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.414718,
+    "lon": 120.596812,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Salud Mitra Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.409507,
+    "lon": 120.601113,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Cabinet Hill - Teachers Camp Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.41107,
+    "lon": 120.603629,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Purok x Outpost",
+    "type": "barangay hall",
+    "lat": 16.415964,
+    "lon": 120.575322,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Purok x Outpost",
+    "type": "barangay hall",
+    "lat": 16.422975,
+    "lon": 120.586824,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Purok x Outpost",
+    "type": "barangay hall",
+    "lat": 16.428253,
+    "lon": 120.575782,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Upper Quirino Magsaysay Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.405236,
+    "lon": 120.591278,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Upper General Luna Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.412837,
+    "lon": 120.60153,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Kayang Extension Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.414156,
+    "lon": 120.588537,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Purok 5 Outpost",
+    "type": "barangay hall",
+    "lat": 16.421155,
+    "lon": 120.597405,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "South Sanitary Camp Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.427409,
+    "lon": 120.596968,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Lopez Jaena Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.425122,
+    "lon": 120.604094,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Brookside Barangay Multi-purpose Hall",
+    "type": "barangay hall",
+    "lat": 16.421108,
+    "lon": 120.602427,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Lower Magsaysay Barangay Multi Purpose Hall",
+    "type": "barangay hall",
+    "lat": 16.419939,
+    "lon": 120.593493,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Sunnyside Fairview Outpost",
+    "type": "barangay hall",
+    "lat": 16.417686,
+    "lon": 120.577392,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Lower Lourdes Subdivision Multipurpose Hall",
+    "type": "barangay hall",
+    "lat": 16.409522,
+    "lon": 120.58488,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Upper Quezon Hill Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.416712,
+    "lon": 120.575934,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Quezon Hill Proper Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.415781,
+    "lon": 120.580044,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Guisad Surong Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.421158,
+    "lon": 120.58398,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Guisad Central Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.422235,
+    "lon": 120.585433,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Cresencia Village Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.418728,
+    "lon": 120.587691,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Pinsao Pilot Project Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.425441,
+    "lon": 120.582466,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Dizon - Manzanillo Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.426034,
+    "lon": 120.591388,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Camdas Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.425427,
+    "lon": 120.593443,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Lower Quirino Hill Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.428076,
+    "lon": 120.591003,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "West Quirino Hill Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.43093,
+    "lon": 120.589284,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "East Quirino Hill Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.431026,
+    "lon": 120.59344,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "North Sanitary Camp Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.429432,
+    "lon": 120.598261,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Leonila Hill Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.42748,
+    "lon": 120.603436,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Aurora Hill Proper Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.42444,
+    "lon": 120.604378,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "New Lucban Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.421041,
+    "lon": 120.596597,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Teodora Alonzo Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.420229,
+    "lon": 120.596908,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Trancoville Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.425423,
+    "lon": 120.593426,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "San Antonio Village Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.426216,
+    "lon": 120.604386,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Middle Quezon Hill Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.415968,
+    "lon": 120.575689,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Alfonso Tabora Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.425431,
+    "lon": 120.59346,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Malcolm Square Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.413297,
+    "lon": 120.595179,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Jeep/Bus Stop",
+    "type": "evacuation center",
+    "lat": 16.430804,
+    "lon": 120.571918,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.410442,
+    "lon": 120.597418,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.416183,
+    "lon": 120.604932,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.426235,
+    "lon": 120.593013,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Pines City Doctors' Hospital",
+    "type": "hospital",
+    "lat": 16.426899,
+    "lon": 120.594644,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Baguio City Hall",
+    "type": "barangay hall",
+    "lat": 16.413792,
+    "lon": 120.591335,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "SLU Hospital of the Sacred Heart",
+    "type": "hospital",
+    "lat": 16.417352,
+    "lon": 120.597965,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Baguio Central Fire Station",
+    "type": "fire station",
+    "lat": 16.414802,
+    "lon": 120.591639,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Andres Bonifacio - Caguioa - Rimando Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.420401,
+    "lon": 120.599005,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "BIBAK Multipurpose Hall",
+    "type": "barangay hall",
+    "lat": 16.410373,
+    "lon": 120.59779,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Dominican - Mirador Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.408859,
+    "lon": 120.582511,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.407072,
+    "lon": 120.60305,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.410599,
+    "lon": 120.603531,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.421536,
+    "lon": 120.593127,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.417334,
+    "lon": 120.599638,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.419331,
+    "lon": 120.600795,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.417266,
+    "lon": 120.603875,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.422212,
+    "lon": 120.600862,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.424219,
+    "lon": 120.604602,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.427473,
+    "lon": 120.603539,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.425504,
+    "lon": 120.60383,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.426701,
+    "lon": 120.591533,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.422598,
+    "lon": 120.590055,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.422819,
+    "lon": 120.586785,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.418757,
+    "lon": 120.585857,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.418489,
+    "lon": 120.586376,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.418981,
+    "lon": 120.587096,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.41945,
+    "lon": 120.588017,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.417826,
+    "lon": 120.586689,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.416601,
+    "lon": 120.586365,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Welcome Cresencia Village Barangay",
+    "type": "evacuation center",
+    "lat": 16.41648,
+    "lon": 120.588524,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.417594,
+    "lon": 120.588624,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.41473,
+    "lon": 120.583282,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.420821,
+    "lon": 120.583023,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.420958,
+    "lon": 120.583736,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.416168,
+    "lon": 120.57802,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.414454,
+    "lon": 120.578633,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.414003,
+    "lon": 120.579991,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.415363,
+    "lon": 120.58532,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.419374,
+    "lon": 120.576904,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.425998,
+    "lon": 120.579682,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.410992,
+    "lon": 120.581712,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.407836,
+    "lon": 120.588663,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.409214,
+    "lon": 120.584625,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.408356,
+    "lon": 120.583353,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.407657,
+    "lon": 120.585066,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.405649,
+    "lon": 120.583789,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.406864,
+    "lon": 120.581975,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "San Roque West",
+    "type": "evacuation center",
+    "lat": 16.410803,
+    "lon": 120.579037,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Diamond Subdivision",
+    "type": "evacuation center",
+    "lat": 16.410232,
+    "lon": 120.578471,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.409169,
+    "lon": 120.598269,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.405973,
+    "lon": 120.575578,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.406296,
+    "lon": 120.599641,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.419102,
+    "lon": 120.598301,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.415911,
+    "lon": 120.575337,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.431299,
+    "lon": 120.584912,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.428226,
+    "lon": 120.581857,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.42519,
+    "lon": 120.594291,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Ridgepark Residences",
+    "type": "evacuation center",
+    "lat": 16.407146,
+    "lon": 120.577943,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.409445,
+    "lon": 120.601069,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.410111,
+    "lon": 120.60068,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Sacred Heart Medical Center",
+    "type": "hospital",
+    "lat": 16.41726,
+    "lon": 120.597281,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Notre Dame de Chartres Hospital",
+    "type": "hospital",
+    "lat": 16.415296,
+    "lon": 120.598661,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.407013,
+    "lon": 120.597893,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.409422,
+    "lon": 120.602996,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.405243,
+    "lon": 120.599372,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.418487,
+    "lon": 120.604326,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.418357,
+    "lon": 120.602402,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.417819,
+    "lon": 120.603099,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.413015,
+    "lon": 120.573945,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.415625,
+    "lon": 120.589472,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.417716,
+    "lon": 120.594931,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.418874,
+    "lon": 120.589293,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.418783,
+    "lon": 120.58583,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.419995,
+    "lon": 120.585288,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.420026,
+    "lon": 120.585445,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.405994,
+    "lon": 120.585025,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.416172,
+    "lon": 120.574217,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.416442,
+    "lon": 120.575523,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.419317,
+    "lon": 120.576787,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.408246,
+    "lon": 120.587985,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.410168,
+    "lon": 120.600783,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.409198,
+    "lon": 120.601887,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.408278,
+    "lon": 120.597544,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.431788,
+    "lon": 120.575262,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.419735,
+    "lon": 120.58907,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.41015,
+    "lon": 120.580972,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.410081,
+    "lon": 120.581035,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.41,
+    "lon": 120.581198,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.421722,
+    "lon": 120.604681,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.408177,
+    "lon": 120.579654,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.408184,
+    "lon": 120.587097,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Unnamed evacuation center",
+    "type": "evacuation center",
+    "lat": 16.417518,
+    "lon": 120.57734,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Session Road Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.410399,
+    "lon": 120.599041,
+    "source": "OpenStreetMap, unverified"
+  },
+  {
+    "name": "Lourdes Subdivision Proper Barangay Hall",
+    "type": "barangay hall",
+    "lat": 16.410868,
+    "lon": 120.582122,
+    "source": "OpenStreetMap, unverified"
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {"id": "pines", "name": "Pines City Doctors' Hospital", "type": "hospital", "lat": 16.426899, "lon": 120.594644, "source": "OpenStreetMap, unverified"},
+  {"id": "slu", "name": "SLU Hospital of the Sacred Heart", "type": "hospital", "lat": 16.417352, "lon": 120.597965, "source": "OpenStreetMap, unverified"},
+  {"id": "notre-dame", "name": "Notre Dame de Chartres Hospital", "type": "hospital", "lat": 16.415296, "lon": 120.598661, "source": "OpenStreetMap, unverified"},
+  {"id": "central-fire", "name": "Baguio Central Fire Station", "type": "fire station", "lat": 16.414802, "lon": 120.591639, "source": "OpenStreetMap, unverified"},
+  {"id": "fire-volunteers", "name": "Baguio Fire Volunteers", "type": "fire station", "lat": 16.412325, "lon": 120.591287, "source": "OpenStreetMap, unverified"},
+  {"id": "hall-surong", "name": "Guisad Surong Barangay Hall", "type": "barangay hall", "lat": 16.421158, "lon": 120.58398, "source": "OpenStreetMap, unverified"},
+  {"id": "hall-central", "name": "Guisad Central Barangay Hall", "type": "barangay hall", "lat": 16.422235, "lon": 120.585433, "source": "OpenStreetMap, unverified"},
+  {"id": "demo-evac", "name": "DEMO Evacuation Center (placeholder location)", "type": "evacuation center", "lat": 16.4205, "lon": 120.58, "source": "Placeholder, not a real evacuation center"}
+]

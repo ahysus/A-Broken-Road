@@ -1,0 +1,3 @@
+# Needed only to DOWNLOAD the road data once. The MacBook does not need these.
+-r requirements.txt
+osmnx==2.1.1
