@@ -33,6 +33,7 @@ def test_network_lists_roads_and_points():
     data = client().get("/api/network").get_json()
     assert len(data["segments"]) > 1000
     assert len(data["points"]) == 10
+    assert len(data["scenarios"]) == 3
     # Every demo marker has to stay clearly labeled as a demo.
     assert all(point["name"].startswith("Demo Point") for point in data["points"])
 

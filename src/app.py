@@ -99,6 +99,7 @@ def get_network():
             {key: place[key] for key in ("id", "name", "type", "lat", "lon", "source")}
             for place in network.destinations.values()
         ],
+        "scenarios": [scenario["name"] for scenario in scenarios],
         "speeds": {"vehicle": config.VEHICLE_SPEED_KPH, "walking": config.WALKING_SPEED_KPH},
     })
 

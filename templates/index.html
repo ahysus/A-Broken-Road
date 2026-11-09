@@ -49,6 +49,9 @@
     <label><input type="radio" name="tool" value="close"> Close or reopen a road</label>
     <button id="reset">Reopen all roads</button>
     <span id="closedCount" class="small"></span>
+    <label style="margin-top:6px">Demo closure
+      <select id="scenario"></select>
+    </label>
 
     <div id="status"></div>
 
@@ -100,11 +103,14 @@ const minutes = (seconds) => (seconds / 60).toFixed(1) + " min";
 // Tells which click tool is selected: "start" or "close".
 const currentTool = () => document.querySelector('input[name="tool"]:checked').value;
 
+// The blue current route comes from D* Lite, which repairs its earlier search after
+// each closure. Dijkstra gives the orange "before" route and the marker colors, and
+// the backend still runs it to check D* Lite.
 // Chooses how each road looks, based on the mode, closures and current route.
 function styleRoad(segment) {
-  const hasRoute = lastState && lastState.start && lastState.dijkstra.found;
+  const hasRoute = lastState && lastState.start && lastState.dstar.found;
   const hadRoute = lastState && lastState.start && lastState.before_route.found;
-  const route = hasRoute ? new Set(lastState.dijkstra.segments) : new Set();
+  const route = hasRoute ? new Set(lastState.dstar.segments) : new Set();
   const before = hadRoute ? new Set(lastState.before_route.segments) : new Set();
   if (closed.has(segment.id)) return { color: "#e00000", weight: 6, opacity: 1 };
   if (route.has(segment.id)) return { color: "#1a56c4", weight: 6, opacity: 1 };
@@ -237,7 +243,7 @@ function showState(state) {
   // Recolor the roads.
   for (const { line, segment } of Object.values(roadLines)) line.setStyle(styleRoad(segment));
   // Keep the route and closures on top of the other roads.
-  if (state.start && state.dijkstra.found) for (const id of state.dijkstra.segments) roadLines[id].line.bringToFront();
+  if (state.start && state.dstar.found) for (const id of state.dstar.segments) roadLines[id].line.bringToFront();
   for (const id of closed) roadLines[id].line.bringToFront();
   // Recolor the demo markers using this mode's isolation result.
   const cutOff = new Set(state.cut_off);
@@ -262,9 +268,9 @@ function showMapKey(state) {
   const rows = [];
   const add = (sample, label) =>
     rows.push(`<div class="keyRow"><span class="sample">${sample}</span>${label}</div>`);
-  const hasRoute = state.start && state.dijkstra.found && state.dijkstra.segments.length > 0;
+  const hasRoute = state.start && state.dstar.found && state.dstar.segments.length > 0;
   // The orange "before" route shows only where it differs from the current route.
-  const current = new Set(hasRoute ? state.dijkstra.segments : []);
+  const current = new Set(hasRoute ? state.dstar.segments : []);
   const hadRoute = state.start && state.before_route.found;
   const beforeVisible = hadRoute && state.before_route.segments.some((id) => !current.has(id) && !closed.has(id));
 
@@ -290,7 +296,7 @@ function showStatus(state) {
     area.innerHTML = `<div class="hint">Click the map to choose a starting point.</div>`;
     return;
   }
-  const now = state.dijkstra;
+  const now = state.dstar;
   // Warn if the click was far from any usable road, since the route starts at that road.
   const far = state.start.snap_m > 100
     ? `<div class="warn">Nearest usable road is ${Math.round(state.start.snap_m)} m from this spot, so the route starts there.</div>` : "";
@@ -348,7 +354,23 @@ function connectControls() {
   });
   document.getElementById("mode").onchange = (event) => { choice.mode = event.target.value; refresh(); };
   document.getElementById("target").onchange = (event) => setTarget(event.target.value);
-  document.getElementById("reset").onclick = async () => { await api("/api/reset", {}); await refresh(); };
+  const scenarioMenu = document.getElementById("scenario");
+  document.getElementById("reset").onclick = async () => {
+    await api("/api/reset", {});
+    scenarioMenu.value = "";
+    await refresh();
+  };
+  // Prepared closures, so the demo does not depend on finding the right roads live.
+  scenarioMenu.innerHTML = `<option value="">None</option>` +
+    network.scenarios.map((name, index) => `<option value="${index}">${safe(name)}</option>`).join("");
+  scenarioMenu.onchange = async () => {
+    if (scenarioMenu.value === "") return;
+    const answer = await api("/api/scenario", { index: Number(scenarioMenu.value) });
+    // Each closure was chosen for one demo point and the nearest destination of any type.
+    choice.target = "any";
+    document.getElementById("target").value = "any";
+    await setStart(answer.lat, answer.lon);
+  };
   document.getElementById("assumptions").textContent =
     `Assumed speeds: vehicle ${network.speeds.vehicle} km/h, walking ${network.speeds.walking} km/h. Facilities unverified.`;
 }
