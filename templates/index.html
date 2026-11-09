@@ -3,16 +3,18 @@
 <head>
 <meta charset="utf-8">
 <title>Guisad Rerouting Prototype</title>
+<!-- An empty icon, so the browser does not report a missing favicon during the demo. -->
+<link rel="icon" href="data:,">
 <!-- Leaflet is the map library. It is stored locally so it loads without internet. -->
 <link rel="stylesheet" href="/static/leaflet/leaflet.css">
 <script src="/static/leaflet/leaflet.js"></script>
 <style>
-  /* Basic layout on purpose: results on the left, map filling the rest. */
+  /* Basic layout on purpose: controls and results on the left, map filling the rest. */
   html, body { height: 100%; margin: 0; font: 14px/1.4 Arial, sans-serif; color: #222; background: #fff; }
   #banner { background: #fff3cd; padding: 6px 12px; border-bottom: 1px solid #d9c77a; font-weight: bold; }
   #layout { display: flex; height: calc(100% - 34px); }
-  #panel { width: 430px; flex: none; overflow-y: auto; padding: 10px 12px; box-sizing: border-box; border-right: 1px solid #bbb; }
-  #map { flex: 1; background: #eee; }
+  #panel { width: 400px; flex: none; overflow-y: auto; padding: 10px 12px; box-sizing: border-box; border-right: 1px solid #bbb; }
+  #map { flex: 1; background: #eee; cursor: crosshair; }
   h1 { font-size: 17px; margin: 0 0 8px; }
   h2 { font-size: 14px; margin: 14px 0 4px; border-bottom: 1px solid #ccc; padding-bottom: 2px; }
   label { display: block; margin-bottom: 5px; }
@@ -21,43 +23,43 @@
   table { border-collapse: collapse; width: 100%; font-size: 13px; }
   th, td { border: 1px solid #ccc; padding: 3px 5px; text-align: left; vertical-align: top; }
   th { background: #f2f2f2; }
-  #points tr[data-point] { cursor: pointer; }
-  #points tr.selected { outline: 2px solid #1a56c4; outline-offset: -2px; }
-  .cut { color: #b00020; font-weight: bold; }
   .warn { background: #fde7ea; border: 1px solid #b00020; padding: 6px; margin: 6px 0; }
   .ok { background: #e6f4e8; border: 1px solid #2e7d32; padding: 6px; margin: 6px 0; }
+  .hint { background: #eaf1fb; border: 1px solid #1a56c4; padding: 6px; margin: 6px 0; }
   .small { font-size: 12px; color: #555; }
   .key { display: inline-block; width: 18px; height: 4px; vertical-align: middle; margin-right: 4px; }
   .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; margin-right: 4px; }
 </style>
 </head>
 <body>
-<div id="banner">PROTOTYPE: demo points, the evacuation center and all closures are simulated. Not findings.</div>
+<div id="banner">PROTOTYPE: demo markers, the evacuation center and all closures are simulated. Not findings.</div>
 <div id="layout">
   <div id="panel">
     <h1>Guisad Rerouting System</h1>
     <label>Travel mode
       <select id="mode"><option value="vehicle">Vehicle (rescue)</option><option value="walking">Walking (evacuees)</option></select>
     </label>
-    <label>Destination
+    <label>Go to
       <select id="target"></select>
     </label>
-    <div>
-      <b>Click a road on the map</b> to close or reopen it.<br>
-      <button id="reset">Reopen all roads</button>
-      <span id="closedCount" class="small"></span>
-    </div>
-    <h2>Demo closures</h2>
-    <div id="scenarios"></div>
 
-    <h2>Isolation check (all points)</h2>
-    <table id="points"></table>
+    <h2>Clicking the map will</h2>
+    <label><input type="radio" name="tool" value="start" checked> Set the starting point</label>
+    <label><input type="radio" name="tool" value="close"> Close or reopen a road</label>
+    <button id="reset">Reopen all roads</button>
+    <span id="closedCount" class="small"></span>
 
-    <h2>Route for <span id="selectedName"></span></h2>
+    <h2>Route</h2>
     <div id="routeSummary"></div>
 
     <h2>Dijkstra compared with D* Lite</h2>
     <div id="comparison"></div>
+
+    <h2>Isolation check</h2>
+    <div id="isolation"></div>
+
+    <h2>Demo closures</h2>
+    <div id="scenarios"></div>
 
     <h2>Critical roads</h2>
     <button id="rank">Rank roads for this mode</button>
@@ -70,9 +72,10 @@
       <span class="key" style="background:#e00000"></span>Closed road<br>
       <span class="key" style="background:#1a56c4"></span>Current route<br>
       <span class="key" style="background:#f39c12"></span>Route before closures<br>
-      <span class="dot" style="background:#2e9e3f"></span>Point connected
-      <span class="dot" style="background:#e00000"></span>Point cut off
+      <span class="dot" style="background:#1a56c4"></span>Starting point
       <span class="dot" style="background:#8e24aa"></span>Destination<br>
+      <span class="dot" style="background:#2e9e3f"></span>Demo marker connected
+      <span class="dot" style="background:#e00000"></span>Demo marker cut off<br>
       <span id="assumptions"></span>
     </div>
   </div>
@@ -80,14 +83,18 @@
 </div>
 
 <script>
-// What the user has currently chosen.
-const choice = { mode: "vehicle", target: "any", point: null };
+// What the user has currently chosen. The start stays empty until the map is clicked.
+const choice = { mode: "vehicle", target: "any", lat: null, lon: null };
 // Data from the server, and the shapes drawn on the map, stored by id.
-let network = null, closed = new Set(), lastState = null;
+let network = null, closed = new Set(), lastState = null, startMarker = null, startLink = null;
 const roadLines = {}, pointMarkers = {};
 
-// Canvas drawing handles thousands of roads smoothly. Tolerance makes thin roads easier to click.
-const map = L.map("map", { renderer: L.canvas({ tolerance: 7 }) });
+// Canvas drawing handles thousands of roads smoothly.
+const map = L.map("map", { renderer: L.canvas({ tolerance: 3 }) });
+// How close to a road, in screen pixels, a click must be to count as clicking it.
+const ROAD_CLICK_PIXELS = 14;
+// The highlight showing which road would close, and when the last hover check ran.
+let previewLine = null, lastHoverTime = 0;
 // The background map needs internet. If it fails, our own roads still draw on a blank background.
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   // Fading the background makes our own roads, closures and routes stand out.
@@ -110,14 +117,19 @@ function safe(text) {
   return holder.innerHTML;
 }
 
-// Formats seconds as minutes, for reading aloud in the demo.
+// Formats values for reading aloud in the demo.
 const minutes = (seconds) => (seconds / 60).toFixed(1) + " min";
 const km = (meters) => (meters / 1000).toFixed(2) + " km";
 
+// Tells which click tool is selected: "start" or "close".
+const currentTool = () => document.querySelector('input[name="tool"]:checked').value;
+
 // Chooses how each road looks, based on the mode, closures and current route.
 function styleRoad(segment) {
-  const route = lastState && lastState.dijkstra.found ? new Set(lastState.dijkstra.segments) : new Set();
-  const before = lastState && lastState.before_route.found ? new Set(lastState.before_route.segments) : new Set();
+  const hasRoute = lastState && lastState.start && lastState.dijkstra.found;
+  const hadRoute = lastState && lastState.start && lastState.before_route.found;
+  const route = hasRoute ? new Set(lastState.dijkstra.segments) : new Set();
+  const before = hadRoute ? new Set(lastState.before_route.segments) : new Set();
   if (closed.has(segment.id)) return { color: "#e00000", weight: 6, opacity: 1 };
   if (route.has(segment.id)) return { color: "#1a56c4", weight: 6, opacity: 1 };
   if (before.has(segment.id)) return { color: "#f39c12", weight: 5, opacity: 0.9 };
@@ -125,45 +137,111 @@ function styleRoad(segment) {
   return { color: "#555", weight: segment.drivable ? 2 : 1.5, opacity: 0.85 };
 }
 
+// Sets the starting point, then updates the results.
+function setStart(lat, lon) {
+  choice.lat = lat;
+  choice.lon = lon;
+  refresh();
+}
+
+// Finds the road closest to a map position, or null if none is close enough.
+function nearestRoad(latlng) {
+  const cursor = map.latLngToLayerPoint(latlng);
+  let best = null, bestDistance = ROAD_CLICK_PIXELS;
+  for (const { segment } of Object.values(roadLines)) {
+    // In vehicle mode, footpaths are not candidates, unless closed and waiting to be reopened.
+    if (choice.mode === "vehicle" && !segment.drivable && !closed.has(segment.id)) continue;
+    // Roads are drawn as chains of short straight pieces, so check each piece.
+    const points = segment.line.map((position) => map.latLngToLayerPoint(position));
+    for (let i = 0; i + 1 < points.length; i++) {
+      const distance = L.LineUtil.pointToSegmentDistance(cursor, points[i], points[i + 1]);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        best = segment;
+      }
+    }
+  }
+  return best;
+}
+
+// Closes or reopens the road nearest the clicked position.
+async function closeRoadAt(latlng) {
+  const segment = nearestRoad(latlng);
+  if (!segment) return;
+  await api("/api/toggle", { segment: segment.id });
+  await refresh();
+}
+
+// Highlights a road and shows its name. Passing null removes the highlight.
+function showPreview(segment, latlng) {
+  if (previewLine) map.removeLayer(previewLine);
+  previewLine = null;
+  if (!segment) return;
+  const action = closed.has(segment.id) ? "Click to reopen" : "Click to close";
+  previewLine = L.polyline(segment.line, { color: "#ff00c8", weight: 7, opacity: 0.8, interactive: false }).addTo(map);
+  previewLine.bindTooltip(`${safe(segment.name || "Unnamed " + segment.highway)}, ${Math.round(segment.length_m)} m. ${action}.`).openTooltip(latlng);
+}
+
 // Draws everything once, when the page first opens.
 function drawMap() {
-  // Barangay outlines. interactive:false lets clicks pass through to the roads.
+  // Barangay outlines. interactive:false lets clicks pass through to the map.
   const outlines = network.boundaries.map((boundary) =>
-    L.polygon(boundary.ring, { color: "#1f7a8c", weight: 2, fill: false, dashArray: "6 4", interactive: false })
-      .bindTooltip(boundary.name).addTo(map));
-  // Draw each road, and make clicking it close or reopen it.
+    L.polygon(boundary.ring, { color: "#1f7a8c", weight: 2, fill: false, dashArray: "6 4", interactive: false }).addTo(map));
+  // Draw each road. interactive:false because the map's own click handler finds the
+  // road, using nearestRoad() below. Leaflet's built-in check picks the topmost road
+  // near the click rather than the closest, which often closed the wrong road.
   for (const segment of network.segments) {
-    const line = L.polyline(segment.line, styleRoad(segment)).addTo(map);
-    line.bindTooltip(`${segment.name || "Unnamed " + segment.highway}, ${Math.round(segment.length_m)} m`, { sticky: true });
-    line.on("click", async () => {
-      await api("/api/toggle", { segment: segment.id });
-      await refresh();
-    });
+    const line = L.polyline(segment.line, { ...styleRoad(segment), interactive: false }).addTo(map);
     roadLines[segment.id] = { line, segment };
   }
-  // Draw destinations in purple.
+  // A map click does what the selected tool says.
+  map.on("click", (event) => {
+    if (currentTool() === "start") setStart(event.latlng.lat, event.latlng.lng);
+    else closeRoadAt(event.latlng);
+  });
+  // In "close" mode, highlight the road the cursor is nearest to, before clicking.
+  map.on("mousemove", (event) => {
+    // Checking every road on every tiny movement is wasteful, so wait 60 ms between checks.
+    if (currentTool() !== "close" || event.originalEvent.timeStamp - lastHoverTime < 60) return;
+    lastHoverTime = event.originalEvent.timeStamp;
+    showPreview(nearestRoad(event.latlng), event.latlng);
+  });
+  map.on("mouseout", () => showPreview(null));
+  // Draw destinations in purple. Clicking one selects it in the "Go to" menu.
   for (const place of network.destinations) {
-    L.circleMarker([place.lat, place.lon], { radius: 6, color: "#4a148c", fillColor: "#8e24aa", fillOpacity: 1, weight: 1 })
-      .bindTooltip(`${place.name} (${place.type})<br>${place.source}`).addTo(map);
+    const marker = L.circleMarker([place.lat, place.lon], { radius: 7, color: "#4a148c", fillColor: "#8e24aa", fillOpacity: 1, weight: 1 })
+      .bindTooltip(`${safe(place.name)} (${safe(place.type)})<br>${safe(place.source)}`).addTo(map);
+    marker.on("click", (event) => {
+      L.DomEvent.stopPropagation(event);
+      // In "close" mode, a marker must not block the road underneath it.
+      if (currentTool() === "close") closeRoadAt(event.latlng);
+      else setTarget("place:" + place.id);
+    });
   }
-  // Draw the demo points. Clicking one selects it.
+  // Draw the demo markers. Their color is the isolation check. Clicking one starts from there.
   for (const point of network.points) {
-    const marker = L.circleMarker([point.lat, point.lon], { radius: 8, color: "#000", weight: 1, fillColor: "#2e9e3f", fillOpacity: 1 })
-      // The offset moves the label clear of the marker, so the marker's color stays visible.
-      .bindTooltip(point.id, { permanent: true, direction: "right", offset: [10, 0] }).addTo(map);
-    marker.on("click", () => { choice.point = point.id; refresh(); });
+    const marker = L.circleMarker([point.lat, point.lon], { radius: 6, color: "#000", weight: 1, fillColor: "#2e9e3f", fillOpacity: 1 })
+      .bindTooltip(point.name).addTo(map);
+    marker.on("click", (event) => {
+      L.DomEvent.stopPropagation(event);
+      if (currentTool() === "close") closeRoadAt(event.latlng);
+      else setStart(point.lat, point.lon);
+    });
     pointMarkers[point.id] = marker;
   }
   // Zoom to fit Guisad.
   map.fitBounds(L.featureGroup(outlines).getBounds().pad(0.15));
 }
 
-// Shows one cell of the isolation table.
-function timeCell(before, now) {
-  if (now === null) return `<span class="cut">CUT OFF</span>`;
-  const added = before === null ? "" : now - before;
-  const extra = added !== "" && added > 0.5 ? ` <b>(+${minutes(added)})</b>` : "";
-  return minutes(now) + extra;
+// Shows the starting point and links it to the road junction it was connected to.
+function drawStart(state) {
+  if (startMarker) map.removeLayer(startMarker);
+  if (startLink) map.removeLayer(startLink);
+  if (!state.start) return;
+  startLink = L.polyline([[choice.lat, choice.lon], [state.start.lat, state.start.lon]],
+    { color: "#1a56c4", weight: 2, dashArray: "4 4", interactive: false }).addTo(map);
+  startMarker = L.circleMarker([choice.lat, choice.lon],
+    { radius: 9, color: "#fff", weight: 3, fillColor: "#1a56c4", fillOpacity: 1, interactive: false }).addTo(map);
 }
 
 // Updates all the results using the latest answer from the backend.
@@ -174,43 +252,50 @@ function showState(state) {
   // Recolor the roads.
   for (const { line, segment } of Object.values(roadLines)) line.setStyle(styleRoad(segment));
   // Keep the route and closures on top of the other roads.
+  if (state.start && state.dijkstra.found) for (const id of state.dijkstra.segments) roadLines[id].line.bringToFront();
   for (const id of closed) roadLines[id].line.bringToFront();
-  if (state.dijkstra.found) for (const id of state.dijkstra.segments) roadLines[id].line.bringToFront();
-  // Fill in the table and recolor the points.
-  const rows = state.table.map((row) => {
-    const isCut = row.now[choice.mode] === null;
-    pointMarkers[row.id].setStyle({ fillColor: isCut ? "#e00000" : "#2e9e3f", weight: row.id === choice.point ? 3 : 1 });
-    return `<tr data-point="${row.id}" class="${row.id === choice.point ? "selected" : ""}">
-      <td>${safe(row.name)}</td><td>${timeCell(row.before.vehicle, row.now.vehicle)}</td><td>${timeCell(row.before.walking, row.now.walking)}</td></tr>`;
-  });
-  const table = document.getElementById("points");
-  table.innerHTML = `<tr><th>Point</th><th>Vehicle</th><th>Walking</th></tr>` + rows.join("");
-  table.querySelectorAll("tr[data-point]").forEach((row) => {
-    row.onclick = () => { choice.point = row.dataset.point; refresh(); };
-  });
+  // Recolor the demo markers using this mode's isolation result.
+  const cutOff = new Set(state.cut_off[choice.mode]);
+  for (const [id, marker] of Object.entries(pointMarkers)) {
+    marker.setStyle({ fillColor: cutOff.has(id) ? "#e00000" : "#2e9e3f" });
+  }
+  const total = network.points.length;
+  document.getElementById("isolation").innerHTML =
+    `<b>${cutOff.size} of ${total}</b> demo markers cut off for ${choice.mode === "vehicle" ? "vehicles" : "walking"} (red on the map).`;
+  drawStart(state);
   showRoute(state);
   showComparison(state);
 }
 
-// Writes the plain-language result for the selected point.
+// Writes the plain-language result for the chosen start and destination.
 function showRoute(state) {
-  document.getElementById("selectedName").textContent = choice.point + " (" + choice.mode + ")";
   const area = document.getElementById("routeSummary");
+  if (!state.start) {
+    area.innerHTML = `<div class="hint">Click the map to choose a starting point.</div>`;
+    return;
+  }
   const before = state.before_route, now = state.dijkstra;
+  // Warn if the click was far from any usable road, since the route starts at that road.
+  const far = state.start.snap_m > 100
+    ? `<div class="warn">Nearest usable road is ${Math.round(state.start.snap_m)} m from this spot, so the route starts there.</div>` : "";
   if (!now.found) {
-    const row = state.table.find((each) => each.id === choice.point);
-    const other = choice.mode === "vehicle" ? "walking" : "vehicle";
-    const alternative = row.now[other] === null
-      ? `<div class="warn">No ${other} route either. This point is fully cut off.</div>`
-      : `<div class="ok">A ${other} route still exists (${minutes(row.now[other])}). Switch the travel mode to see it.</div>`;
-    area.innerHTML = `<div class="warn"><b>No ${choice.mode} route.</b> This point cannot reach the chosen destination type.</div>` + alternative;
+    const other = state.other_mode;
+    const alternative = other.found
+      ? `<div class="ok">A ${other.mode} route still exists (${minutes(other.time_s)}). Switch the travel mode to see it.</div>`
+      : `<div class="warn">No ${other.mode} route either. This spot is fully cut off from this destination.</div>`;
+    area.innerHTML = far + `<div class="warn"><b>No ${choice.mode} route.</b> Open roads cannot reach this destination.</div>` + alternative;
+    return;
+  }
+  // A start connected to the destination's own junction has no route to draw.
+  if (now.segments.length === 0) {
+    area.innerHTML = `<div class="hint">This spot connects directly to ${safe(now.destination.join(", "))}, so no travel is needed. Click farther away, or choose another destination.</div>`;
     return;
   }
   const addedTime = before.found ? now.time_s - before.time_s : 0;
   const addedDistance = before.found ? now.length_m - before.length_m : 0;
-  area.innerHTML = `<table>
+  area.innerHTML = far + `<table>
     <tr><th></th><th>Before closures</th><th>Now</th></tr>
-    <tr><th>Goes to</th><td>${safe((before.destination || ["-"]).join(", "))}</td><td>${safe(now.destination.join(", "))}</td></tr>
+    <tr><th>Goes to</th><td>${safe(before.destination.join(", "))}</td><td>${safe(now.destination.join(", "))}</td></tr>
     <tr><th>Distance</th><td>${km(before.length_m)}</td><td>${km(now.length_m)}</td></tr>
     <tr><th>Time</th><td>${minutes(before.time_s)}</td><td>${minutes(now.time_s)}</td></tr>
     <tr><th>Added</th><td></td><td><b>+${km(addedDistance)}, +${minutes(addedTime)}</b></td></tr></table>`;
@@ -218,8 +303,12 @@ function showRoute(state) {
 
 // Shows the two algorithms side by side.
 function showComparison(state) {
-  const a = state.dijkstra, b = state.dstar;
   const area = document.getElementById("comparison");
+  if (!state.start) {
+    area.innerHTML = `<div class="small">Appears after you choose a starting point.</div>`;
+    return;
+  }
+  const a = state.dijkstra, b = state.dstar;
   if (!a.found && !b.found) {
     area.innerHTML = `<div class="small">Both agree that no route exists. Dijkstra: ${a.ms.toFixed(2)} ms. D* Lite: ${b.ms.toFixed(2)} ms (${b.expanded} junctions repaired).</div>`;
     return;
@@ -236,25 +325,51 @@ function showComparison(state) {
 
 // Asks the backend for the current results, then displays them.
 async function refresh() {
-  const query = new URLSearchParams(choice).toString();
-  showState(await api("/api/state?" + query));
+  const query = { mode: choice.mode, target: choice.target };
+  // Include the start only once one has been chosen.
+  if (choice.lat !== null) { query.lat = choice.lat; query.lon = choice.lon; }
+  showState(await api("/api/state?" + new URLSearchParams(query).toString()));
+}
+
+// Selects a destination in the menu and updates the results.
+function setTarget(value) {
+  choice.target = value;
+  document.getElementById("target").value = value;
+  refresh();
+}
+
+// Fills the "Go to" menu: nearest of a type first, then each specific destination.
+function fillDestinationMenu() {
+  const types = [...new Set(network.destinations.map((place) => place.type))];
+  let html = `<optgroup label="Nearest"><option value="any">Nearest of any type</option>` +
+    types.map((type) => `<option value="${safe(type)}">Nearest ${safe(type)}</option>`).join("") + `</optgroup>`;
+  for (const type of types) {
+    const places = network.destinations.filter((place) => place.type === type);
+    html += `<optgroup label="${safe(type)}">` +
+      places.map((place) => `<option value="place:${safe(place.id)}">${safe(place.name)}</option>`).join("") + `</optgroup>`;
+  }
+  document.getElementById("target").innerHTML = html;
 }
 
 // Connects the controls on the left to the backend.
 function connectControls() {
-  document.getElementById("target").innerHTML = network.targets.map((target) =>
-    `<option value="${safe(target)}">${target === "any" ? "Nearest of any type" : safe(target)}</option>`).join("");
+  fillDestinationMenu();
+  // Remove the road highlight when switching back to setting the starting point.
+  document.querySelectorAll('input[name="tool"]').forEach((radio) => {
+    radio.onchange = () => showPreview(null);
+  });
   document.getElementById("mode").onchange = (event) => { choice.mode = event.target.value; refresh(); };
-  document.getElementById("target").onchange = (event) => { choice.target = event.target.value; refresh(); };
+  document.getElementById("target").onchange = (event) => setTarget(event.target.value);
   document.getElementById("reset").onclick = async () => { await api("/api/reset", {}); await refresh(); };
   document.getElementById("scenarios").innerHTML = network.scenarios.map((name, index) =>
     `<button data-scenario="${index}">${safe(name)}</button>`).join("<br>");
   document.querySelectorAll("button[data-scenario]").forEach((button) => {
     button.onclick = async () => {
       const answer = await api("/api/scenario", { index: Number(button.dataset.scenario) });
-      // Select the point this closure was chosen for, so the effect is visible immediately.
-      choice.point = answer.point;
-      await refresh();
+      // A demo closure comes with the start it was chosen for, and uses the nearest destination.
+      choice.lat = answer.lat;
+      choice.lon = answer.lon;
+      setTarget("any");
     };
   });
   document.getElementById("rank").onclick = async () => {
@@ -262,9 +377,9 @@ function connectControls() {
     area.textContent = "Calculating...";
     const query = new URLSearchParams({ mode: choice.mode, target: choice.target }).toString();
     const rows = await api("/api/critical?" + query);
-    area.innerHTML = `<table><tr><th>#</th><th>Road</th><th>Points cut off</th><th>Added time, all points</th></tr>` +
+    area.innerHTML = `<table><tr><th>#</th><th>Road</th><th>Markers cut off</th><th>Added time, all markers</th></tr>` +
       rows.map((row, index) => `<tr><td>${index + 1}</td><td>${safe(row.name || "Unnamed")} (segment ${row.segment})</td><td>${row.isolated}</td><td>${minutes(row.added_s)}</td></tr>`).join("") +
-      `</table><div class="small">Based on demo points, so this shows the method only.</div>`;
+      `</table><div class="small">Based on demo markers, so this shows the method only.</div>`;
   };
   document.getElementById("assumptions").textContent =
     `Assumed speeds: vehicle ${network.speeds.vehicle} km/h, walking ${network.speeds.walking} km/h. Facilities unverified.`;
@@ -273,7 +388,6 @@ function connectControls() {
 // Runs once when the page opens: load the data, draw it, show the first results.
 (async function start() {
   network = await api("/api/network");
-  choice.point = network.points[0].id;
   connectControls();
   drawMap();
   await refresh();

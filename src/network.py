@@ -50,6 +50,9 @@ class RoadNetwork:
         # A reversed copy for each mode. Closures remove edges from this copy.
         # It is reversed because we search backward, from destinations to people.
         self.reversed_open = {mode: self.graphs[mode].reverse(copy=True) for mode in MODES}
+        # A second reversed copy that closures never touch, used for "before closures"
+        # results. A view is enough here, since this version is only ever read.
+        self.reversed_intact = {mode: self.graphs[mode].reverse(copy=False) for mode in MODES}
         # For each mode: which directed edges (from, to) belong to each segment.
         self.segment_edges = {mode: self._edges_by_segment(mode) for mode in MODES}
         # Attach each starting point to its nearest junction in each graph.
@@ -106,13 +109,24 @@ class RoadNetwork:
         snapped["node"] = {mode: self.nearest_node(place["lat"], place["lon"], mode) for mode in MODES}
         return snapped
 
-    def goals(self, mode, target_type="any"):
-        """Returns the junctions of every destination of the chosen type."""
+    def is_valid_target(self, target):
+        """Checks whether a destination choice from the page is a real option."""
+        # A specific place looks like "place:slu". Its id has to exist.
+        if target.startswith("place:"):
+            return target[len("place:"):] in self.destinations
+        # Otherwise it has to be "any" or the type of at least one destination.
+        return target == "any" or any(place["type"] == target for place in self.destinations.values())
+
+    def goals(self, mode, target="any"):
+        """Returns the junctions of the chosen destination or destination type."""
+        # One specific destination, chosen by the user. Example: "place:slu".
+        if target.startswith("place:"):
+            return {self.destinations[target[len("place:"):]]["node"][mode]}
         return {
             place["node"][mode]
             for place in self.destinations.values()
             # "any" accepts all destinations. Otherwise the type has to match.
-            if target_type == "any" or place["type"] == target_type
+            if target == "any" or place["type"] == target
         }
 
     def set_closed(self, segment_id, is_closed):

@@ -6,9 +6,9 @@ import json
 from flask import Flask, jsonify, render_template, request
 
 import config
-from analysis import describe_path, destination_names, dijkstra_route, isolation_report, rank_critical_roads
+from analysis import describe_path, destination_names, isolation_report, rank_critical_roads, route_from_node
 from dstar_lite import DStarLite
-from network import MODES, load_network
+from network import MODES, distance_m, load_network
 
 # Tell Flask where the page and its supporting files are.
 app = Flask(__name__, template_folder=str(config.ROOT / "templates"), static_folder=str(config.ROOT / "static"))
@@ -21,27 +21,21 @@ network = load_network()
 with open(config.DATA_DIR / "scenarios.json", encoding="utf-8") as file:
     scenarios = json.load(file)
 
-# The choices offered in the page's "Destination" menu.
-TARGET_TYPES = ("any", "hospital", "fire station", "barangay hall", "evacuation center")
-
-# Save the situation before any closure, so we can show "before" and "added" values.
-baseline_times = {(mode, target): isolation_report(network, mode, target) for mode in MODES for target in TARGET_TYPES}
-baseline_routes = {
-    (mode, target, point_id): dijkstra_route(network, mode, point_id, target)
-    for mode in MODES for target in TARGET_TYPES for point_id in network.points
-}
-
 # Finished D* Lite planners are kept here, so each one can reuse its earlier work.
 planners = {}
 
+# The most planners to keep. Every new clicked start creates one, so this limits memory.
+MAX_PLANNERS = 300
 
-def dstar_route(mode, target, point_id):
+
+def dstar_route(mode, target, start):
     """Gets the D* Lite route, creating the planner the first time it is needed."""
-    key = (mode, target, point_id)
+    key = (mode, target, start)
     # A new planner has to do a full first search. A saved one only repairs changes.
     first_search = key not in planners
     if first_search:
-        start = network.points[point_id]["node"][mode]
+        if len(planners) >= MAX_PLANNERS:
+            planners.clear()
         planners[key] = DStarLite(network, mode, start, network.goals(mode, target))
     result = planners[key].plan(network.closed)
     result["first_search"] = first_search
@@ -51,6 +45,28 @@ def dstar_route(mode, target, point_id):
         result.update(segments=details["segments"], length_m=details["length_m"],
                       destination=destination_names(network, mode, result["nodes"][-1]))
     return result
+
+
+def without_nodes(route):
+    """Removes the junction list, because the page draws routes from segment ids."""
+    return {key: value for key, value in route.items() if key != "nodes"}
+
+
+def read_start():
+    """Reads the clicked map position from the request.
+
+    Returns (lat, lon), or None if no start has been chosen yet. Raises ValueError
+    if the values are not valid map coordinates.
+    """
+    lat = request.args.get("lat")
+    lon = request.args.get("lon")
+    if lat is None or lon is None:
+        return None
+    lat, lon = float(lat), float(lon)
+    # Reject positions that are not on Earth. The comparison also rejects NaN.
+    if not (-90 <= lat <= 90 and -180 <= lon <= 180):
+        raise ValueError("Coordinates are out of range")
+    return lat, lon
 
 
 @app.route("/")
@@ -68,48 +84,58 @@ def get_network():
             for segment in network.segments.values()
         ],
         "boundaries": network.boundaries,
-        "points": list(network.points.values()),
-        "destinations": list(network.destinations.values()),
+        "points": [{key: point[key] for key in ("id", "name", "lat", "lon")} for point in network.points.values()],
+        "destinations": [
+            {key: place[key] for key in ("id", "name", "type", "lat", "lon", "source")}
+            for place in network.destinations.values()
+        ],
         "scenarios": [scenario["name"] for scenario in scenarios],
-        "targets": TARGET_TYPES,
         "speeds": {"vehicle": config.VEHICLE_SPEED_KPH, "walking": config.WALKING_SPEED_KPH},
     })
 
 
 @app.route("/api/state")
 def get_state():
-    """Sends the current results for the mode, destination type and point chosen."""
+    """Sends the current results for the chosen mode, destination and starting position."""
     # Read the page's choices from the web address, with defaults if they are missing.
     mode = request.args.get("mode", "vehicle")
     target = request.args.get("target", "any")
-    point_id = request.args.get("point", next(iter(network.points)))
     # Reject anything that is not a real option, rather than crash on it.
-    if mode not in MODES or target not in TARGET_TYPES or point_id not in network.points:
-        return jsonify({"error": "Unknown mode, destination type or point"}), 400
+    if mode not in MODES or not network.is_valid_target(target):
+        return jsonify({"error": "Unknown mode or destination"}), 400
+    try:
+        start_position = read_start()
+    except ValueError:
+        return jsonify({"error": "Invalid map position"}), 400
 
-    # One row per point, for both travel modes.
-    current = {each: isolation_report(network, each, target) for each in MODES}
-    table = [
-        {
-            "id": each_id,
-            "name": network.points[each_id]["name"],
-            "before": {each: baseline_times[(each, target)][each_id] for each in MODES},
-            "now": {each: current[each][each_id] for each in MODES},
-        }
-        for each_id in network.points
-    ]
-    return jsonify({
-        "closed": sorted(network.closed),
-        "table": table,
-        "before_route": without_nodes(baseline_routes[(mode, target, point_id)]),
-        "dijkstra": without_nodes(dijkstra_route(network, mode, point_id, target)),
-        "dstar": without_nodes(dstar_route(mode, target, point_id)),
-    })
+    # Which demo points are cut off now. The page uses this to color the markers.
+    cut_off = {
+        each: [point_id for point_id, seconds in isolation_report(network, each, target).items() if seconds is None]
+        for each in MODES
+    }
+    state = {"closed": sorted(network.closed), "cut_off": cut_off, "start": None}
 
-
-def without_nodes(route):
-    """Removes the junction list, because the page draws routes from segment ids."""
-    return {key: value for key, value in route.items() if key != "nodes"}
+    if start_position is not None:
+        lat, lon = start_position
+        # Connect the clicked position to the nearest junction in this mode's graph.
+        start = network.nearest_node(lat, lon, mode)
+        place = network.nodes[start]
+        # Also check the other mode, so the page can offer it if this mode has no route.
+        other_mode = "walking" if mode == "vehicle" else "vehicle"
+        other_start = network.nearest_node(lat, lon, other_mode)
+        other_route = route_from_node(network, other_mode, other_start, target)
+        state.update({
+            "start": {
+                "lat": place["lat"],
+                "lon": place["lon"],
+                "snap_m": distance_m(lat, lon, place["lat"], place["lon"]),
+            },
+            "before_route": without_nodes(route_from_node(network, mode, start, target, intact=True)),
+            "dijkstra": without_nodes(route_from_node(network, mode, start, target)),
+            "dstar": without_nodes(dstar_route(mode, target, start)),
+            "other_mode": {"mode": other_mode, "found": other_route["found"], "time_s": other_route.get("time_s")},
+        })
+    return jsonify(state)
 
 
 @app.route("/api/toggle", methods=["POST"])
@@ -131,12 +157,13 @@ def reset():
 
 @app.route("/api/scenario", methods=["POST"])
 def load_scenario():
-    """Clears all closures, then applies one prepared demo closure."""
+    """Clears all closures, applies one prepared demo closure, and gives its starting position."""
     scenario = scenarios[request.get_json()["index"]]
     network.reset()
     for segment_id in scenario["segments"]:
         network.set_closed(segment_id, True)
-    return jsonify({"closed": sorted(network.closed), "point": scenario["point"]})
+    point = network.points[scenario["point"]]
+    return jsonify({"closed": sorted(network.closed), "lat": point["lat"], "lon": point["lon"]})
 
 
 @app.route("/api/critical")
@@ -144,8 +171,8 @@ def critical():
     """Ranks the roads whose closure would do the most harm."""
     mode = request.args.get("mode", "vehicle")
     target = request.args.get("target", "any")
-    if mode not in MODES or target not in TARGET_TYPES:
-        return jsonify({"error": "Unknown mode or destination type"}), 400
+    if mode not in MODES or not network.is_valid_target(target):
+        return jsonify({"error": "Unknown mode or destination"}), 400
     return jsonify(rank_critical_roads(network, mode, target))
 
 

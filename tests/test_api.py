@@ -8,11 +8,18 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import app as server
 
+# A spot inside Guisad, used as the "clicked" starting point.
+CLICK = {"lat": 16.4195, "lon": 120.5825}
+
 
 def client():
     # Flask's test client sends requests straight to the app, with no real network.
     server.network.reset()
     return server.app.test_client()
+
+
+def state(web, **choices):
+    return web.get("/api/state", query_string=choices).get_json()
 
 
 def test_page_and_map_library_load():
@@ -27,49 +34,87 @@ def test_network_lists_roads_points_and_scenarios():
     assert len(data["segments"]) > 1000
     assert len(data["points"]) == 10
     assert len(data["scenarios"]) == 3
-    # Every demo point has to stay clearly labeled as a demo.
+    # Every demo marker has to stay clearly labeled as a demo.
     assert all(point["name"].startswith("Demo Point") for point in data["points"])
 
 
-def test_clicking_a_road_closes_then_reopens_it():
+def test_no_start_chosen_returns_no_route_but_still_checks_isolation():
+    answer = state(client())
+    assert answer["start"] is None
+    assert "dijkstra" not in answer
+    assert answer["cut_off"] == {"vehicle": [], "walking": []}
+
+
+def test_clicking_any_spot_gives_a_route():
+    answer = state(client(), mode="vehicle", **CLICK)
+    assert answer["start"]["snap_m"] < 100
+    assert answer["dijkstra"]["found"] is True
+    assert answer["dijkstra"]["segments"]
+
+
+def test_user_can_choose_one_specific_destination():
     web = client()
-    route = web.get("/api/state?mode=vehicle&point=P1").get_json()["dijkstra"]
-    road = route["segments"][0]
+    for place in server.network.destinations.values():
+        answer = state(web, mode="vehicle", target="place:" + place["id"], **CLICK)
+        assert answer["dijkstra"]["destination"] == [place["name"]]
+
+
+def test_nearest_of_a_type_only_goes_to_that_type():
+    web = client()
+    hospitals = {p["name"] for p in server.network.destinations.values() if p["type"] == "hospital"}
+    answer = state(web, mode="walking", target="hospital", **CLICK)
+    assert set(answer["dijkstra"]["destination"]) <= hospitals
+
+
+def test_closing_a_road_on_the_route_changes_it_and_shows_added_time():
+    web = client()
+    first = state(web, mode="vehicle", target="place:slu", **CLICK)["dijkstra"]
+    road = first["segments"][len(first["segments"]) // 2]
     assert web.post("/api/toggle", json={"segment": road}).get_json()["closed"] == [road]
-    assert road in web.get("/api/state?mode=vehicle&point=P1").get_json()["closed"]
+    answer = state(web, mode="vehicle", target="place:slu", **CLICK)
+    assert road in answer["closed"]
+    # "Before" must ignore the closure, and the new route must avoid the closed road.
+    assert answer["before_route"]["time_s"] == first["time_s"]
+    if answer["dijkstra"]["found"]:
+        assert road not in answer["dijkstra"]["segments"]
+        assert answer["dijkstra"]["time_s"] >= first["time_s"]
     assert web.post("/api/toggle", json={"segment": road}).get_json()["closed"] == []
 
 
-def test_the_two_algorithms_agree_in_every_mode_and_destination_type():
+def test_the_two_algorithms_agree_for_every_mode_and_destination():
     web = client()
+    targets = ["any", "hospital", "fire station", "barangay hall", "evacuation center"]
+    targets += ["place:" + key for key in server.network.destinations]
     for mode in ["vehicle", "walking"]:
-        for target in ["any", "hospital", "fire station", "barangay hall", "evacuation center"]:
-            state = web.get("/api/state", query_string={"mode": mode, "target": target, "point": "P3"}).get_json()
-            assert state["dijkstra"]["found"] == state["dstar"]["found"]
-            assert abs(state["dijkstra"]["time_s"] - state["dstar"]["time_s"]) < 1e-6
+        for target in targets:
+            answer = state(web, mode=mode, target=target, **CLICK)
+            assert answer["dijkstra"]["found"] == answer["dstar"]["found"]
+            assert abs(answer["dijkstra"]["time_s"] - answer["dstar"]["time_s"]) < 1e-6
 
 
 def test_scenario_a_shows_vehicle_cut_off_with_walking_route():
     web = client()
-    answer = web.post("/api/scenario", json={"index": 0}).get_json()
-    state = web.get("/api/state", query_string={"mode": "vehicle", "point": answer["point"]}).get_json()
-    assert state["dijkstra"]["found"] is False
-    assert state["dstar"]["found"] is False
-    row = next(each for each in state["table"] if each["id"] == answer["point"])
-    assert row["now"]["vehicle"] is None
-    assert row["now"]["walking"] is not None
+    spot = web.post("/api/scenario", json={"index": 0}).get_json()
+    answer = state(web, mode="vehicle", lat=spot["lat"], lon=spot["lon"])
+    assert answer["dijkstra"]["found"] is False
+    assert answer["dstar"]["found"] is False
+    assert answer["other_mode"]["found"] is True
+    assert answer["cut_off"]["vehicle"]
 
 
 def test_reset_clears_closures():
     web = client()
     web.post("/api/scenario", json={"index": 1})
     assert web.post("/api/reset", json={}).get_json()["closed"] == []
-    assert web.get("/api/state").get_json()["closed"] == []
+    assert state(web)["closed"] == []
 
 
 def test_bad_input_gets_an_error_not_a_crash():
     web = client()
     assert web.get("/api/state?mode=boat").status_code == 400
+    assert web.get("/api/state?target=place:nowhere").status_code == 400
+    assert web.get("/api/state?lat=abc&lon=1").status_code == 400
+    assert web.get("/api/state?lat=999&lon=1").status_code == 400
     assert web.post("/api/toggle", json={"segment": -1}).status_code == 400
 
 
