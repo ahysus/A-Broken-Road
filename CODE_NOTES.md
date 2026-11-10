@@ -10,7 +10,7 @@ Every code file also has plain-English comments on each step. This page gives th
 | `src/make_demo_points.py` | Picks the 10 demo locations and the 3 demo closures | Only when rebuilding the data |
 | `src/network.py` | Loads the saved roads, builds the vehicle and walking graphs, tracks closures | Every time the server starts |
 | `src/analysis.py` | Dijkstra: isolation check, routes, critical road ranking | Every update |
-| `src/dstar_lite.py` | D* Lite, written by us because NetworkX does not have it | Every update |
+| `src/dstar_lite.py` | D* Lite, implemented for this project because NetworkX does not include it | Every update |
 | `src/app.py` | The web server: receives clicks from the page and sends back results | While the demo runs |
 | `templates/index.html` | The page: map, controls, legend | In the browser |
 | `tests/` | Automated checks, 29 in total | `python -m pytest tests -q` |
