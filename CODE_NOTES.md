@@ -12,7 +12,7 @@ Every code file also has plain-English comments on each step. This page gives th
 | `src/analysis.py` | Dijkstra: isolation check, routes, critical road ranking | Every update |
 | `src/dstar_lite.py` | D* Lite, written by us because NetworkX does not have it | Every update |
 | `src/app.py` | The web server: receives clicks from the page and sends back results | While the demo runs |
-| `templates/index.html` | The page: map, controls, map key | In the browser |
+| `templates/index.html` | The page: map, controls, legend | In the browser |
 | `tests/` | Automated checks, 29 in total | `python -m pytest tests -q` |
 | `data/` | Saved roads, demo points, destinations, demo closures | Read at startup |
 
@@ -42,7 +42,7 @@ That is much faster than searching separately from every location.
    - **Before route** (`route_from_node` with `intact=True`, Dijkstra): the route as if nothing were closed. Drawn orange.
    - **Current route** (`DStarLite.plan`): drawn blue.
    - **Dijkstra check** (`route_from_node`): the same route by Dijkstra, kept to confirm D* Lite.
-4. **The page** colors the roads and markers and updates the map key.
+4. **The page** colors the roads and markers and updates the legend.
 
 Closing a road sends `/api/toggle` with the segment id. The server marks it closed in both graphs.
 

@@ -53,7 +53,7 @@
 
     <div id="status"></div>
 
-    <h2>Map key</h2>
+    <h2>Legend</h2>
     <div id="mapKey" class="small"></div>
     <div id="assumptions" class="small"></div>
   </div>
@@ -281,7 +281,7 @@ function showMapKey(state) {
   if (closed.size) add(lineSample("#e00000", 6, 1), "Closed road");
   if (state.start) add(dotSample("#1a56c4", 9, "#fff", 3), "Starting point");
   add(dotSample("#8e24aa", 7, "#4a148c", 1), "Destination (click to select)");
-  add(dotSample("#2e9e3f", 6, "#000", 1), "Demo marker, connected");
+  add(dotSample("#2e9e3f", 6, "#000", 1), "Demo marker");
   if (state.cut_off.length) add(dotSample("#e00000", 6, "#000", 1), "Demo marker, cut off");
   if (currentTool() === "close") add(lineSample("#ff00c8", 7, 0.8), "Road under the cursor (click to close or reopen)");
   document.getElementById("mapKey").innerHTML = rows.join("");
