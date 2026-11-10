@@ -1,9 +1,4 @@
-"""Downloads the Guisad roads and facilities ONCE and saves them as JSON.
-
-Run this only on the build PC:  python src/build_data.py
-The demo never runs this file, so the demo does not depend on the map servers
-and the MacBook does not need OSMnx installed.
-"""
+"""Downloads the Guisad roads and facilities ONCE and saves them as JSON."""
 
 # json writes the saved files. urllib downloads from the internet.
 import json

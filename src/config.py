@@ -1,4 +1,4 @@
-"""Settings for the Guisad rerouting prototype. Change values here, not in the other files."""
+"""Settings for the Guisad rerouting prototype."""
 
 # pathlib builds file paths that work on both Windows and Mac.
 from pathlib import Path

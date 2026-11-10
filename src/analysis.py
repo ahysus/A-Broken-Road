@@ -1,5 +1,5 @@
 """Isolation checks and Dijkstra routes. Everything here reads the current closures,
-unless intact=True is passed, which answers "what was it like before any closure?"."""
+unless intact=True is passed."""
 
 # time measures how long a search takes.
 import time

@@ -1,9 +1,4 @@
-"""Chooses demo starting points and demo closures from the real road network.
-
-Run once on the build PC:  python src/make_demo_points.py
-It writes data/demo_points.json and data/scenarios.json. The demo only reads them.
-These points are NOT real purok locations. They get replaced once verified puroks exist.
-"""
+"""Chooses demo starting points and demo closures from the real road network."""
 
 import json
 

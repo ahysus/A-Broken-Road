@@ -184,9 +184,5 @@ def critical():
         return jsonify({"error": "Unknown mode or destination"}), 400
     return jsonify(rank_critical_roads(network, *choices))
 
-
-# Run the server only when this file is started directly.
 if __name__ == "__main__":
-    # Port 8000, because Macs often use port 5000 for AirPlay. threaded=False handles
-    # one request at a time, which keeps the closure state simple for a one-person demo.
     app.run(host="127.0.0.1", port=8000, debug=False, threaded=False)

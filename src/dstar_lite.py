@@ -1,18 +1,3 @@
-"""D* Lite, written for this project because NetworkX does not include it.
-
-The idea, in plain words:
-- The search works BACKWARD, from the destinations toward the starting point.
-- Every junction has two numbers. g is the best time we have settled on. rhs is
-  what its neighbors say the best time should be right now.
-- If g equals rhs, the junction is "consistent". If not, it needs fixing and waits
-  in a priority queue.
-- When a road closes, only the junctions affected are marked inconsistent, so only
-  they get repaired. That reuse is why it can replan without starting over.
-
-Based on Koenig and Likhachev's D* Lite algorithm. This version has several goals:
-every destination simply gets rhs = 0, so "nearest destination" needs nothing extra.
-"""
-
 # heapq is Python's priority queue. It always gives back the smallest item first.
 import heapq
 import time
