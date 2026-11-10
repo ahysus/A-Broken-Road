@@ -11,8 +11,7 @@
 <style>
   /* Basic layout on purpose: controls and results on the left, map filling the rest. */
   html, body { height: 100%; margin: 0; font: 14px/1.4 Arial, sans-serif; color: #222; background: #fff; }
-  #banner { background: #fff3cd; padding: 6px 12px; border-bottom: 1px solid #d9c77a; font-weight: bold; }
-  #layout { display: flex; height: calc(100% - 34px); }
+  #layout { display: flex; height: 100%; }
   #panel { width: 400px; flex: none; overflow-y: auto; padding: 10px 12px; box-sizing: border-box; border-right: 1px solid #bbb; }
   #map { flex: 1; background: #eee; cursor: crosshair; }
   h1 { font-size: 17px; margin: 0 0 8px; }
@@ -33,7 +32,6 @@
 </style>
 </head>
 <body>
-<div id="banner">PROTOTYPE: demo markers, the evacuation center and all closures are simulated. Not findings.</div>
 <div id="layout">
   <div id="panel">
     <h1>Guisad Rerouting System</h1>
